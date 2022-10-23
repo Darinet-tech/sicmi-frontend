@@ -1,0 +1,13 @@
+.button{
+    position: absolute;
+    top: 700px;
+    left: 400px;
+    
+}
+.imagen{
+    position: absolute;
+    margin-top: -35px;
+    width: 100%;
+    height: 935px;
+        
+}
