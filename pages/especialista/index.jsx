@@ -7,7 +7,7 @@ export default function especialista() {
   const { user, loading } = useFetchUser();
   return (
     <Layout user={user} titulo="Especialista">
-      <LayoutEspecialista>Bienvenido!!!</LayoutEspecialista>
+      <LayoutEspecialista>Bienvenido Especialista!!!</LayoutEspecialista>
     </Layout>
   );
 }
