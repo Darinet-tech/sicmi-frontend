@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useFetchUser } from "../../lib/authContext";
 import { Table, Row, Col, Tooltip, User, Text } from "@nextui-org/react";
 import { useState } from "react";
@@ -8,6 +9,7 @@ import {
 } from "../../lib/auth";
 import { fetcher } from "../../lib/api";
 import { Authentication, Layout } from "../../components";
+import LayoutEspecialista from "../../components/LayoutEspecialista";
 
 export default function inmuebles({ inmuebles }) {
   const { user, loading } = useFetchUser();
@@ -31,7 +33,8 @@ export default function inmuebles({ inmuebles }) {
     }
   );
   return (
-    <Layout user={user} titulo="Especialista" mostrar="especialista">
+    <Layout user={user} titulo="Especialista" baseURL="./../">
+      <LayoutEspecialista>
       {!loading &&
         (user ? (
           <Table
@@ -69,6 +72,8 @@ export default function inmuebles({ inmuebles }) {
             <Authentication />
           </main>
         ))}
+      </LayoutEspecialista>
+      
     </Layout>
   );
 }

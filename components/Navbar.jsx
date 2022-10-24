@@ -3,7 +3,7 @@ import styles from "../styles/navbar.module.css";
 import { unsetToken } from "../lib/auth";
 import { useFetchUser } from "../lib/authContext";
 
-export const Navbar = () => {
+export const Navbar = ({baseURL}) => {
   const { user, loading } = useFetchUser();
   const logout = () => {
     unsetToken();
@@ -71,7 +71,7 @@ export const Navbar = () => {
             width: "60px",
             height: "60px",
           }}
-          src="./images/LogoETECSAOK.png"
+          src={`${baseURL}/images/LogoETECSAOK.png`}
           alt=""
         />
       </div>
