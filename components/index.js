@@ -1,12 +1,7 @@
-export * from './Navbar'
-export * from './Layout'
-export * from './Menu'
-export * from './Inmuebles'
-export * from './Formulario'
-export * from './Seleccionar'
-export * from './TablaUsuario'
-export * from './Authentication'
-export * from './Password'
-export * from './Email'
-
-
+export * from "./Navbar";
+export * from "./Layout";
+export * from "./LayoutEspecialista";
+export * from "./MenuEspecialista";
+export * from "./Authentication";
+export * from "./Password";
+export * from "./Email";

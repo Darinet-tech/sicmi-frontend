@@ -3,10 +3,19 @@ import styles from "../styles/navbar.module.css";
 import { unsetToken } from "../lib/auth";
 import { useFetchUser } from "../lib/authContext";
 
-export const Navbar = ({baseURL}) => {
+export const Navbar = ({ baseURL }) => {
   const { user, loading } = useFetchUser();
-  const logout = () => {
-    unsetToken();
+
+  const goto = (key) => {
+    switch (key) {
+      case "profile":
+        break;
+      case "logout":
+        unsetToken();
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -32,18 +41,14 @@ export const Navbar = ({baseURL}) => {
                 size="lg"
                 color="primary"
                 name="Usuario"
-                src="images/user.png"
+                src={`${baseURL}/images/user.png`}
               />
             </Dropdown.Trigger>
-            <Dropdown.Menu aria-label="User Actions">
-              <Dropdown.Item key="profile">
-                <Button light>MIS DATOS</Button>
-              </Dropdown.Item>
+            <Dropdown.Menu aria-label="User Actions" onAction={goto}>
+              <Dropdown.Item key="profile">MIS DATOS</Dropdown.Item>
 
               <Dropdown.Item key="logout" withDivider css={{ height: "$15" }}>
-                <Button onClick={logout} color="error">
-                  CERRAR SESIÓN
-                </Button>
+                CERRAR SESIÓN
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

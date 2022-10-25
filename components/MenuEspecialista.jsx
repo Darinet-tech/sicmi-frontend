@@ -11,7 +11,7 @@ const MenuEspecialista = () => {
       case "crear_inmueble":
         break;
       case "listar_inmueble":
-        router.push('especialista/inmuebles')
+        router.push("../especialista/inmuebles");
         break;
       default:
         break;
