@@ -10,8 +10,9 @@ import {
 import { fetcher } from "../../lib/api";
 import { Authentication, Layout } from "../../components";
 import LayoutEspecialista from "../../components/LayoutEspecialista";
+import AddInmueble from "../../components/AddInmueble";
 
-export default function inmuebles({ inmuebles }) {
+export default function inmuebles({ inmuebles, centrodecostos }) {
   const { user, loading } = useFetchUser();
   const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
@@ -35,45 +36,51 @@ export default function inmuebles({ inmuebles }) {
   return (
     <Layout user={user} titulo="Especialista" baseURL="./../">
       <LayoutEspecialista>
-      {!loading &&
-        (user ? (
-          <Table
-            aria-label="Listado de Inmuebles"
-            css={{
-              height: "auto",
-              minWidth: "100%",
-            }}
-            selectionMode="single"
-          >
-            <Table.Header>
-              <Table.Column>DESCRIPCION</Table.Column>
-              <Table.Column>DIRECCION</Table.Column>
-              <Table.Column>CENTRO DE COSTO</Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {inmuebles &&
-                inmuebles.data.map((inmuebleItem) => {
-                  return (
-                    <Table.Row key={inmuebleItem.id}>
-                      <Table.Cell>
-                        {inmuebleItem.attributes.descripcion}
-                      </Table.Cell>
-                      <Table.Cell>
-                        {inmuebleItem.attributes.direccion}
-                      </Table.Cell>
-                      <Table.Cell></Table.Cell>
-                    </Table.Row>
-                  );
-                })}
-            </Table.Body>
-          </Table>
-        ) : (
-          <main>
-            <Authentication />
-          </main>
-        ))}
+        {!loading &&
+          (user ? (
+            <>
+              <AddInmueble centrodecostos={centrodecostos} />
+              {inmuebles.data.length === 0 ? (
+                <h2>No existen Inmuebles registrados</h2>
+              ) : (
+                <Table
+                  aria-label="Listado de Inmuebles"
+                  css={{
+                    height: "auto",
+                    minWidth: "100%",
+                  }}
+                  selectionMode="single"
+                >
+                  <Table.Header>
+                    <Table.Column>DESCRIPCION</Table.Column>
+                    <Table.Column>DIRECCION</Table.Column>
+                    <Table.Column>CENTRO DE COSTO</Table.Column>
+                  </Table.Header>
+                  <Table.Body>
+                    {inmuebles &&
+                      inmuebles.data.map((inmuebleItem) => {
+                        return (
+                          <Table.Row key={inmuebleItem.id}>
+                            <Table.Cell>
+                              {inmuebleItem.attributes.descripcion}
+                            </Table.Cell>
+                            <Table.Cell>
+                              {inmuebleItem.attributes.direccion}
+                            </Table.Cell>
+                            <Table.Cell></Table.Cell>
+                          </Table.Row>
+                        );
+                      })}
+                  </Table.Body>
+                </Table>
+              )}
+            </>
+          ) : (
+            <main>
+              <Authentication />
+            </main>
+          ))}
       </LayoutEspecialista>
-      
     </Layout>
   );
 }
@@ -94,9 +101,22 @@ export async function getServerSideProps({ req, params }) {
       },
     }
   );
+
+  const centrosResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/centrodecostos`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
+
   return {
     props: {
       inmuebles: inmueblesResponse,
+      centrodecostos: centrosResponse,
     },
   };
 }

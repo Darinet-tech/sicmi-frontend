@@ -14,7 +14,6 @@ export const Authentication = () => {
   const handler = () => setVisible(true);
   const closeHandler = () => {
     setVisible(false);
-    console.log("closed");
   };
 
   const [data, setData] = React.useState({
@@ -24,24 +23,25 @@ export const Authentication = () => {
 
   const { user, loading } = useUser();
 
-  const handleSubmit = async (e) => {
-    //console.log(e);
-    //e.preventDefault();
-
-    const responseData = await fetcher(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          identifier: data.identifier,
-          password: data.password,
-        }),
-      }
-    );
-    setToken(responseData);
+  const handleSubmit = async () => {
+    try {
+      const responseData = await fetcher(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            identifier: data.identifier,
+            password: data.password,
+          }),
+        }
+      );
+      setToken(responseData);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const handleChange = (e) => {
@@ -50,7 +50,6 @@ export const Authentication = () => {
 
   return (
     <div>
-      
       {!loading && !user ? (
         <>
           <Button
