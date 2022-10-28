@@ -17,17 +17,16 @@ const MenuEspecialista = () => {
   };
 
   return (
-    <Grid xl={3}>
+    <Grid xl={12}>
       <Card
         css={{
-          mw: "450px",
-          marginTop: "10px",
+          marginTop: "1px",
           height: "max-content",
         }}
       >
         <Card.Body css={{ textAlign: "center" }}>
           <Grid.Container gap={1} justify="flex-start">
-            <Grid xs={12}>
+            <Grid xl={12}>
               <Dropdown>
                 <Dropdown.Button>MENU</Dropdown.Button>
                 <Dropdown.Menu

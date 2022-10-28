@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useFetchUser } from "../../lib/authContext";
-import { Table, Row, Col, Tooltip, User, Text } from "@nextui-org/react";
+import { Table, Button, Card, Tooltip, User, Text } from "@nextui-org/react";
 import { useState } from "react";
 import useSWR from "swr";
 import {
@@ -12,7 +12,12 @@ import { Authentication, Layout } from "../../components";
 import LayoutEspecialista from "../../components/LayoutEspecialista";
 import AddInmueble from "../../components/AddInmueble";
 
+<<<<<<< HEAD
 export default function inmuebles({ inmuebles, centrodecostos }) {
+=======
+
+export default function inmuebles({ inmuebles }) {
+>>>>>>> 033fb7c41345e5475b9701f7671fb2bcb0609de5
   const { user, loading } = useFetchUser();
   const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
@@ -36,6 +41,7 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
   return (
     <Layout user={user} titulo="Especialista" baseURL="./../">
       <LayoutEspecialista>
+<<<<<<< HEAD
         {!loading &&
           (user ? (
             <>
@@ -80,6 +86,70 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
               <Authentication />
             </main>
           ))}
+=======
+      {!loading &&
+        (user ? (
+          <Card css={{ marginTop: "10px" }}>
+          <Button
+            
+            css={{
+              position: "absolute",
+              right: "1px",
+              top: "1px",
+              color: "white",
+              backgroundColor: "red",
+              height: "25px",
+            }}
+            auto
+          >
+            X
+          </Button>
+          <Card.Body>
+          <Text h5 css={{ textAlign: "center" }}>
+              LISTADO DE INMUEBLES
+            </Text>
+            <Table
+            aria-label="Listado de Inmuebles"
+            css={{
+              height: "auto",
+              minWidth: "100%",
+            }}
+            selectionMode="single"
+          >
+            <Table.Header>
+              <Table.Column>DESCRIPCION</Table.Column>
+              <Table.Column>DIRECCION</Table.Column>
+              <Table.Column>CENTRO DE COSTO</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {inmuebles &&
+                inmuebles.data.map((inmuebleItem) => {
+                  return (
+                    <Table.Row key={inmuebleItem.id}>
+                      <Table.Cell>
+                        {inmuebleItem.attributes.descripcion}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {inmuebleItem.attributes.direccion}
+                      </Table.Cell>
+                      <Table.Cell></Table.Cell>
+
+                    </Table.Row>
+                  );
+                })}
+            </Table.Body>
+          </Table>
+            
+          </Card.Body>
+          
+        </Card>
+          
+        ) : (
+          <main>
+            <Authentication />
+          </main>
+        ))}
+>>>>>>> 033fb7c41345e5475b9701f7671fb2bcb0609de5
       </LayoutEspecialista>
     </Layout>
   );
