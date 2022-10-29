@@ -2546,11 +2546,6 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-memoize-one@^5.0.0:
-  version "5.2.1"
-  resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz"
-  integrity sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==
-
 memoize-one@^6.0.0:
   version "6.0.0"
   resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-6.0.0.tgz"
@@ -3276,17 +3271,17 @@ react-is@^18.2.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-select@^5.5.0:
-  version "5.5.0"
-  resolved "https://registry.npmjs.org/react-select/-/react-select-5.5.0.tgz"
-  integrity sha512-yzA+eavdxpF5Onf0u9KZ84qxr8r/CwPPn777bRkslbDtEUYx2+m13OrhP3WVa30+aWYxwkO/pkLcZ7q7r/6OhQ==
+react-select@^5.5.7:
+  version "5.5.7"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.5.7.tgz#87760030e6377a7ae3d0b1e419190af175ec2a0e"
+  integrity sha512-izQBXNhTPqXDw4gxzTbc9aLII4tCJ2pdMm6l/WVzKhfHm3RLErheqDNgeenU0XxzqbwT9swYO4CAYk5IzqLlYw==
   dependencies:
     "@babel/runtime" "^7.12.0"
     "@emotion/cache" "^11.4.0"
     "@emotion/react" "^11.8.1"
     "@floating-ui/dom" "^1.0.1"
     "@types/react-transition-group" "^4.4.0"
-    memoize-one "^5.0.0"
+    memoize-one "^6.0.0"
     prop-types "^15.6.0"
     react-transition-group "^4.3.0"
     use-isomorphic-layout-effect "^1.1.2"

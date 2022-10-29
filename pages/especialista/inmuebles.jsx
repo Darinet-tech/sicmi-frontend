@@ -1,23 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useFetchUser } from "../../lib/authContext";
-import { Table, Button, Card, Tooltip, User, Text } from "@nextui-org/react";
 import { useState } from "react";
 import useSWR from "swr";
+import { useFetchUser } from "../../lib/authContext";
+
 import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
 } from "../../lib/auth";
+
 import { fetcher } from "../../lib/api";
 import { Authentication, Layout } from "../../components";
 import LayoutEspecialista from "../../components/LayoutEspecialista";
 import AddInmueble from "../../components/AddInmueble";
+import TableInmuebles from "../../components/TableInmuebles";
 
-<<<<<<< HEAD
 export default function inmuebles({ inmuebles, centrodecostos }) {
-=======
-
-export default function inmuebles({ inmuebles }) {
->>>>>>> 033fb7c41345e5475b9701f7671fb2bcb0609de5
   const { user, loading } = useFetchUser();
   const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
@@ -41,7 +38,6 @@ export default function inmuebles({ inmuebles }) {
   return (
     <Layout user={user} titulo="Especialista" baseURL="./../">
       <LayoutEspecialista>
-<<<<<<< HEAD
         {!loading &&
           (user ? (
             <>
@@ -49,36 +45,37 @@ export default function inmuebles({ inmuebles }) {
               {inmuebles.data.length === 0 ? (
                 <h2>No existen Inmuebles registrados</h2>
               ) : (
-                <Table
-                  aria-label="Listado de Inmuebles"
-                  css={{
-                    height: "auto",
-                    minWidth: "100%",
-                  }}
-                  selectionMode="single"
-                >
-                  <Table.Header>
-                    <Table.Column>DESCRIPCION</Table.Column>
-                    <Table.Column>DIRECCION</Table.Column>
-                    <Table.Column>CENTRO DE COSTO</Table.Column>
-                  </Table.Header>
-                  <Table.Body>
-                    {inmuebles &&
-                      inmuebles.data.map((inmuebleItem) => {
-                        return (
-                          <Table.Row key={inmuebleItem.id}>
-                            <Table.Cell>
-                              {inmuebleItem.attributes.descripcion}
-                            </Table.Cell>
-                            <Table.Cell>
-                              {inmuebleItem.attributes.direccion}
-                            </Table.Cell>
-                            <Table.Cell></Table.Cell>
-                          </Table.Row>
-                        );
-                      })}
-                  </Table.Body>
-                </Table>
+                <>
+                  <TableInmuebles inmuebles={data} />
+                  <div className="space-x-2 space-y-2">
+                    <button
+                      className={`md:p-2 rounded py-2 text-black text-white p-2 ${
+                        pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
+                      }`}
+                      disabled={pageIndex === 1}
+                      onClick={() => setPageIndex(pageIndex - 1)}
+                    >
+                      {" "}
+                      Anterior
+                    </button>
+                    <button
+                      className={`md:p-2 rounded py-2 text-black text-white p-2 ${
+                        pageIndex === (data && data.meta.pagination.pageCount)
+                          ? "bg-gray-300"
+                          : "bg-blue-400"
+                      }`}
+                      disabled={
+                        pageIndex === (data && data.meta.pagination.pageCount)
+                      }
+                      onClick={() => setPageIndex(pageIndex + 1)}
+                    >
+                      Siguiente
+                    </button>
+                    <span>{`${pageIndex} of ${
+                      data && data.meta.pagination.pageCount
+                    }`}</span>
+                  </div>
+                </>
               )}
             </>
           ) : (
@@ -86,70 +83,6 @@ export default function inmuebles({ inmuebles }) {
               <Authentication />
             </main>
           ))}
-=======
-      {!loading &&
-        (user ? (
-          <Card css={{ marginTop: "10px" }}>
-          <Button
-            
-            css={{
-              position: "absolute",
-              right: "1px",
-              top: "1px",
-              color: "white",
-              backgroundColor: "red",
-              height: "25px",
-            }}
-            auto
-          >
-            X
-          </Button>
-          <Card.Body>
-          <Text h5 css={{ textAlign: "center" }}>
-              LISTADO DE INMUEBLES
-            </Text>
-            <Table
-            aria-label="Listado de Inmuebles"
-            css={{
-              height: "auto",
-              minWidth: "100%",
-            }}
-            selectionMode="single"
-          >
-            <Table.Header>
-              <Table.Column>DESCRIPCION</Table.Column>
-              <Table.Column>DIRECCION</Table.Column>
-              <Table.Column>CENTRO DE COSTO</Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {inmuebles &&
-                inmuebles.data.map((inmuebleItem) => {
-                  return (
-                    <Table.Row key={inmuebleItem.id}>
-                      <Table.Cell>
-                        {inmuebleItem.attributes.descripcion}
-                      </Table.Cell>
-                      <Table.Cell>
-                        {inmuebleItem.attributes.direccion}
-                      </Table.Cell>
-                      <Table.Cell></Table.Cell>
-
-                    </Table.Row>
-                  );
-                })}
-            </Table.Body>
-          </Table>
-            
-          </Card.Body>
-          
-        </Card>
-          
-        ) : (
-          <main>
-            <Authentication />
-          </main>
-        ))}
->>>>>>> 033fb7c41345e5475b9701f7671fb2bcb0609de5
       </LayoutEspecialista>
     </Layout>
   );

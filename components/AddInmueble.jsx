@@ -1,8 +1,11 @@
 import React from "react";
 import { Modal, Button, Text, Input, Row, Checkbox } from "@nextui-org/react";
 import { fetcher } from "../lib/api";
+import { getTokenFromLocalCookie } from "../lib/auth";
+import { useRouter } from "next/router";
 
 const AddInmueble = ({ centrodecostos }) => {
+  const router = useRouter();
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
 
@@ -11,13 +14,16 @@ const AddInmueble = ({ centrodecostos }) => {
     console.log("closed");
   };
 
-  const [data, setData] = React.useState({
+  const [inmueble, setInmueble] = React.useState({
     descripcion: "",
     direccion: "",
+    centrodecosto: "",
   });
 
+  const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
+
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+    setInmueble({ ...inmueble, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
@@ -28,13 +34,12 @@ const AddInmueble = ({ centrodecostos }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
           },
-          body: JSON.stringify({
-            descripcion: data.descripcion,
-            direccion: data.direccion,
-          }),
+          body: JSON.stringify({ data: inmueble }),
         }
       );
+      router.reload();
     } catch (error) {
       console.log(error.message);
     }
@@ -79,6 +84,17 @@ const AddInmueble = ({ centrodecostos }) => {
             size="lg"
             placeholder="Direcci&oacute;n"
           />
+          <select name="centrodecosto" onChange={handleChange}>
+            {centrodecostos &&
+              centrodecostos.data.map((ccItem) => {
+                return (
+                  <option key={ccItem.id} value={ccItem.id}>
+                    {" "}
+                    {ccItem.attributes.centrocosto}{" "}
+                  </option>
+                );
+              })}
+          </select>
         </Modal.Body>
         <Modal.Footer>
           <Button auto flat color="error" onClick={closeHandler}>
