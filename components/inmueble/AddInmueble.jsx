@@ -1,7 +1,7 @@
 import React from "react";
-import { Modal, Button, Text, Input, Row, Checkbox } from "@nextui-org/react";
-import { fetcher } from "../lib/api";
-import { getTokenFromLocalCookie } from "../lib/auth";
+import { Modal, Button, Text, Input } from "@nextui-org/react";
+import { fetcher } from "../../lib/api";
+import { getTokenFromLocalCookie } from "../../lib/auth";
 import { useRouter } from "next/router";
 
 const AddInmueble = ({ centrodecostos }) => {
@@ -11,7 +11,6 @@ const AddInmueble = ({ centrodecostos }) => {
 
   const closeHandler = () => {
     setVisible(false);
-    console.log("closed");
   };
 
   const [inmueble, setInmueble] = React.useState({
@@ -72,7 +71,7 @@ const AddInmueble = ({ centrodecostos }) => {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Descripci&oacute;n"
+            labelPlaceholder="Descripci&oacute;n"
           />
           <Input
             name="direccion"
@@ -82,7 +81,7 @@ const AddInmueble = ({ centrodecostos }) => {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Direcci&oacute;n"
+            labelPlaceholder="Direcci&oacute;n"
           />
           <select name="centrodecosto" onChange={handleChange}>
             {centrodecostos &&

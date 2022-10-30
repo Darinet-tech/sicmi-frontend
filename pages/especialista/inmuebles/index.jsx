@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from "react";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import useSWR from "swr";
-import { useFetchUser } from "../../lib/authContext";
-
+import { useFetchUser } from "../../../lib/authContext";
 import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
-} from "../../lib/auth";
+} from "../../../lib/auth";
 
-import { fetcher } from "../../lib/api";
-import { Authentication, Layout } from "../../components";
-import LayoutEspecialista from "../../components/LayoutEspecialista";
-import AddInmueble from "../../components/AddInmueble";
-import TableInmuebles from "../../components/TableInmuebles";
+import { fetcher } from "../../../lib/api";
+import { Authentication, Layout } from "../../../components";
+import LayoutEspecialista from "../../../components/especialista/LayoutEspecialista";
+import AddInmueble from "../../../components/inmueble/AddInmueble";
+import TableInmuebles from "../../../components/inmueble/TableInmuebles";
 
 export default function inmuebles({ inmuebles, centrodecostos }) {
   const { user, loading } = useFetchUser();
@@ -21,7 +21,7 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
 
   const { data } = useSWR(
     [
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?pagination[page]=${pageIndex}&pagination[pageSize]=5`,
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?populate[0]=centrodecosto&pagination[page]=${pageIndex}&pagination[pageSize]=5`,
       {
         method: "GET",
         headers: {
@@ -35,6 +35,7 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
       fallbackData: inmuebles,
     }
   );
+
   return (
     <Layout user={user} titulo="Especialista" baseURL="./../">
       <LayoutEspecialista>
@@ -42,6 +43,7 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
           (user ? (
             <>
               <AddInmueble centrodecostos={centrodecostos} />
+
               {inmuebles.data.length === 0 ? (
                 <h2>No existen Inmuebles registrados</h2>
               ) : (
@@ -56,7 +58,7 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
                       onClick={() => setPageIndex(pageIndex - 1)}
                     >
                       {" "}
-                      Anterior
+                      <FaArrowAltCircleLeft />
                     </button>
                     <button
                       className={`md:p-2 rounded py-2 text-black text-white p-2 ${
@@ -69,9 +71,9 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
                       }
                       onClick={() => setPageIndex(pageIndex + 1)}
                     >
-                      Siguiente
+                      <FaArrowAltCircleRight />
                     </button>
-                    <span>{`${pageIndex} of ${
+                    <span>{`${pageIndex} de ${
                       data && data.meta.pagination.pageCount
                     }`}</span>
                   </div>
@@ -95,7 +97,7 @@ export async function getServerSideProps({ req, params }) {
       : getTokenFromServerCookie(req);
 
   const inmueblesResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?pagination[page]=1&pagination[pageSize]=5`,
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?populate[0]=centrodecosto&pagination[page]=1&pagination[pageSize]=5`,
     {
       method: "GET",
       headers: {
