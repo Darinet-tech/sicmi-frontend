@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Layout } from "../../components";
-import LayoutEspecialista from "../../components/LayoutEspecialista";
+import LayoutEspecialista from "../../components/especialista/LayoutEspecialista";
 import { useFetchUser } from "../../lib/authContext";
 
 export default function especialista() {

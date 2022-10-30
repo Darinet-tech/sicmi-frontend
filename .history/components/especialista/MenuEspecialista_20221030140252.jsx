@@ -10,7 +10,6 @@ const MenuEspecialista = () => {
         router.push("../especialista/solicitudes");
         break;
       case "crear_inmueble":
-        router.push("../especialista/crear_inmueble");
         break;
       case "listar_inmueble":
         router.push("../especialista/inmuebles");
@@ -32,14 +31,14 @@ const MenuEspecialista = () => {
           <Grid.Container gap={1} justify="flex-start">
             <Grid xl={12}>
               <Dropdown>
-                <Dropdown.Button light bordered color="gradient" style={{ width:"100%" }}>SOLICITUD</Dropdown.Button>
+                <Dropdown.Button style={{ width:"100%"}}>SOLICITUD</Dropdown.Button>
                 <Dropdown.Menu                
-                  variant="shadow"
+                  variant="light"
                   aria-label="Actions"
-                  css={{ textAlign: "center", height: "max-content" }}
+                  css={{ height: "70px" }}
                   onAction={goto}
                 >
-                  <Dropdown.Item key="listar_solicitud" color="warning">
+                  <Dropdown.Item key="listar_solicitud">
                     LISTAR SOLICITUDES
                   </Dropdown.Item>
                 </Dropdown.Menu>
@@ -47,20 +46,20 @@ const MenuEspecialista = () => {
             </Grid>
           </Grid.Container>
           <Grid.Container gap={1} justify="flex-start">
-            <Grid xl={12}>
+            <Grid xs={12}>
               <Dropdown>
-                <Dropdown.Button light bordered color="gradient" style={{ width:"100%"}}>INMUEBLE</Dropdown.Button>
+                <Dropdown.Button style={{ width:"100%"}}>INMUEBLE</Dropdown.Button>
                 <Dropdown.Menu
                   color="primary"
-                  variant="shadow"
+                  variant="light"
                   aria-label="Actions"
-                  css={{ textAlign: "center", height: "max-content" }}
+                  css={{ height: "110px" }}
                   onAction={goto}
                 >
-                  <Dropdown.Item key="crear_inmueble" color="success" style={{ textAlign: "center", width:"100%"}}>
+                  <Dropdown.Item key="crear_inmueble" color="success">
                     CREAR INMUEBLE
                   </Dropdown.Item>
-                  <Dropdown.Item key="listar_inmueble" color="warning" style={{ textAlign: "center", width:"100%"}}>
+                  <Dropdown.Item key="listar_inmueble" variant="light" color="warning">
                     LISTAR INMUEBLES
                   </Dropdown.Item>
                 </Dropdown.Menu>
