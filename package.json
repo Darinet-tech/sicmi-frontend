@@ -15,6 +15,7 @@
     "@heroicons/react": "^2.0.12",
     "@mui/material": "^5.10.5",
     "@nextui-org/react": "^1.0.0-beta.10",
+    "@react-pdf/renderer": "^3.0.0",
     "antd": "^4.23.1",
     "axios": "^1.1.2",
     "js-cookie": "^3.0.1",

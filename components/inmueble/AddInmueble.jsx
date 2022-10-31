@@ -71,7 +71,7 @@ const AddInmueble = ({ centrodecostos }) => {
             fullWidth
             color="primary"
             size="lg"
-            labelPlaceholder="Descripci&oacute;n"
+            placeholder="Descripci&oacute;n"
           />
           <Input
             name="direccion"
@@ -81,7 +81,7 @@ const AddInmueble = ({ centrodecostos }) => {
             fullWidth
             color="primary"
             size="lg"
-            labelPlaceholder="Direcci&oacute;n"
+            placeholder="Direcci&oacute;n"
           />
           <select name="centrodecosto" onChange={handleChange}>
             {centrodecostos &&

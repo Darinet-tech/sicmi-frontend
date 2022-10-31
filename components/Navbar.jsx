@@ -40,7 +40,7 @@ export const Navbar = ({ baseURL }) => {
                 as="button"
                 size="lg"
                 color="primary"
-                name="Usuario"
+                name={user}
                 src={`${baseURL}/images/user.png`}
               />
             </Dropdown.Trigger>

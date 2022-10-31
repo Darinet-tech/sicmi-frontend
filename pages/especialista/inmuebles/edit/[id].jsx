@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Modal, Button, Text, Input } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useFetchUser } from "../../../../lib/authContext";
-import { Authentication, Layout } from "../../../../components";
+import { Layout } from "../../../../components";
 import LayoutEspecialista from "../../../../components/especialista/LayoutEspecialista";
 import {
   getTokenFromLocalCookie,
@@ -85,74 +85,67 @@ export default function editPage({ centrodecostos }) {
   return (
     <Layout user={user} titulo="Especialista" baseURL="./../../../">
       <LayoutEspecialista>
-        {!loading &&
-          (user ? (
-            <>
-              <Modal
-                closeButton
-                aria-labelledby="modal-title"
-                open={true}
-                onClose={closeHandler}
+        <>
+          <Modal
+            closeButton
+            aria-labelledby="modal-title"
+            open={true}
+            onClose={closeHandler}
+          >
+            <Modal.Header>
+              <Text id="modal-title" size={18}>
+                <Text b size={18}>
+                  Editar Inmueble
+                </Text>
+              </Text>
+            </Modal.Header>
+            <Modal.Body>
+              <Input
+                name="descripcion"
+                onChange={handleChange}
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="lg"
+                value={inmueble.descripcion}
+              />
+              <Input
+                name="direccion"
+                onChange={handleChange}
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="lg"
+                value={inmueble.direccion}
+              />
+              <select
+                name="centrodecosto"
+                onChange={handleChange}
+                value={inmueble.centrodecosto}
               >
-                <Modal.Header>
-                  <Text id="modal-title" size={18}>
-                    <Text b size={18}>
-                      Editar Inmueble
-                    </Text>
-                  </Text>
-                </Modal.Header>
-                <Modal.Body>
-                  <Input
-                    name="descripcion"
-                    onChange={handleChange}
-                    clearable
-                    bordered
-                    fullWidth
-                    color="primary"
-                    size="lg"
-                    value={inmueble.descripcion}
-                  />
-                  <Input
-                    name="direccion"
-                    onChange={handleChange}
-                    clearable
-                    bordered
-                    fullWidth
-                    color="primary"
-                    size="lg"
-                    value={inmueble.direccion}
-                  />
-                  <select
-                    name="centrodecosto"
-                    onChange={handleChange}
-                    value={inmueble.centrodecosto}
-                  >
-                    {centrodecostos &&
-                      centrodecostos.data.map((ccItem) => {
-                        return (
-                          <option key={ccItem.id} value={ccItem.id}>
-                            {" "}
-                            {ccItem.attributes.centrocosto}{" "}
-                          </option>
-                        );
-                      })}
-                  </select>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button auto flat color="error" onClick={closeHandler}>
-                    Cancelar
-                  </Button>
-                  <Button auto onClick={handleSubmit}>
-                    Salvar
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </>
-          ) : (
-            <main>
-              <Authentication />
-            </main>
-          ))}
+                {centrodecostos &&
+                  centrodecostos.data.map((ccItem) => {
+                    return (
+                      <option key={ccItem.id} value={ccItem.id}>
+                        {" "}
+                        {ccItem.attributes.centrocosto}{" "}
+                      </option>
+                    );
+                  })}
+              </select>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button auto flat color="error" onClick={closeHandler}>
+                Cancelar
+              </Button>
+              <Button auto onClick={handleSubmit}>
+                Salvar
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </>
       </LayoutEspecialista>
     </Layout>
   );

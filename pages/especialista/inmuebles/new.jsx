@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Modal, Button, Text, Input } from "@nextui-org/react";
 import { useRouter } from "next/router";
-import { Authentication, Layout } from "../../../components";
+import { Layout } from "../../../components";
 import LayoutEspecialista from "../../../components/especialista/LayoutEspecialista";
 
 import {
@@ -53,9 +53,7 @@ export default function newPage({ centrodecostos }) {
   return (
     <Layout user={user} titulo="Especialista" baseURL="./../../">
       <LayoutEspecialista>
-        {!loading &&
-          (user ? (
-            <>
+      <>
               <Modal
                 closeButton
                 aria-labelledby="modal-title"
@@ -78,7 +76,7 @@ export default function newPage({ centrodecostos }) {
                     fullWidth
                     color="primary"
                     size="lg"
-                    labelPlaceholder="Descripci&oacute;n"
+                    placeholder="Descripci&oacute;n"
                   />
                   <Input
                     name="direccion"
@@ -88,7 +86,7 @@ export default function newPage({ centrodecostos }) {
                     fullWidth
                     color="primary"
                     size="lg"
-                    labelPlaceholder="Direcci&oacute;n"
+                    placeholder="Direcci&oacute;n"
                   />
                   <select name="centrodecosto" onChange={handleChange}>
                     {centrodecostos &&
@@ -112,11 +110,6 @@ export default function newPage({ centrodecostos }) {
                 </Modal.Footer>
               </Modal>
             </>
-          ) : (
-            <main>
-              <Authentication />
-            </main>
-          ))}
       </LayoutEspecialista>
     </Layout>
   );
