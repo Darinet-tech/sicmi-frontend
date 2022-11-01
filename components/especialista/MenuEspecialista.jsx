@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Grid, Dropdown } from "@nextui-org/react";
+import { Card, Grid, Dropdown } from "@nextui-org/react";
 import { useRouter } from "next/router";
 
 const MenuEspecialista = () => {
@@ -7,6 +7,7 @@ const MenuEspecialista = () => {
   const goto = (key) => {
     switch (key) {
       case "listar_solicitud":
+        router.push("../especialista/solicitudes");
         break;
       case "listar_inmueble":
         router.push("/especialista/inmuebles");
@@ -32,9 +33,10 @@ const MenuEspecialista = () => {
                 <Dropdown.Menu
                   variant="light"
                   aria-label="Actions"
+                  css={{ textAlign: "center", height: "max-content" }}
                   onAction={goto}
                 >
-                  <Dropdown.Item key="listar_solicitud">
+                  <Dropdown.Item key="listar_solicitud" color="warning">
                     SOLICITUDES
                   </Dropdown.Item>
                   <Dropdown.Item key="listar_inmueble">INMUEBLES</Dropdown.Item>
