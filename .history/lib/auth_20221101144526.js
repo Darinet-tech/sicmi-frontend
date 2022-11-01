@@ -80,7 +80,7 @@ export const redirectByRole = () => {
             Router.push("/cliente");
             break;
           case "Administrador":
-            Router.push("/admin");
+            Router.push("/cliente");
             break;
           default:
             Router.push("/");

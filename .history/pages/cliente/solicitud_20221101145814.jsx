@@ -18,7 +18,6 @@ import {
 import { fetcher } from "../../lib/api";
 import { Authentication, Layout } from "../../components";
 import styles from "../../styles/solicitud.module.css";
-import LayoutCliente from "../../components/cliente/LayoutCliente";
 
 export default function solicitud({ solicitud }) {
   const { user, loading } = useFetchUser();
@@ -59,7 +58,7 @@ export default function solicitud({ solicitud }) {
   };
   return (
     <Layout user={user} titulo="Cliente" baseURL="./../">
-      <LayoutCliente>
+      <LayoutClient>
         {!loading &&
           (user ? (
             <Grid.Container>
@@ -140,7 +139,7 @@ export default function solicitud({ solicitud }) {
               <Authentication />
             </main>
           ))}
-      </LayoutCliente>
+      </LayoutClient>
     </Layout>
   );
 }

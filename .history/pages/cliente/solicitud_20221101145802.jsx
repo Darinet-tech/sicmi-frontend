@@ -18,7 +18,6 @@ import {
 import { fetcher } from "../../lib/api";
 import { Authentication, Layout } from "../../components";
 import styles from "../../styles/solicitud.module.css";
-import LayoutCliente from "../../components/cliente/LayoutCliente";
 
 export default function solicitud({ solicitud }) {
   const { user, loading } = useFetchUser();
