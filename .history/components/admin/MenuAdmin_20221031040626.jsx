@@ -2,23 +2,21 @@ import React from "react";
 import { Card, Grid, Dropdown } from "@nextui-org/react";
 import { useRouter } from "next/router";
 
-const MenuEspecialista = () => {
+const MenuAdmin = () => {
   const router = useRouter();
   const goto = (key) => {
     switch (key) {
-      case "listar_solicitud":
-        router.push("../especialista/solicitudes");
+      case "crear_usuario":
+        router.push("../admin/crear_usuario");
         break;
-      case "listar_inmueble":
-        router.push("../especialista/inmuebles");
-        break;
+      
       default:
         break;
     }
   };
 
   return (
-    <Grid xl={12}>
+    <Grid xl={12} css={{}}>
       <Card
         css={{
           marginTop: "1px",
@@ -36,10 +34,10 @@ const MenuEspecialista = () => {
                   css={{ textAlign: "center", height: "max-content" }}
                   onAction={goto}
                 >
-                  <Dropdown.Item key="listar_solicitud" color="warning">
-                    SOLICITUDES
+                  <Dropdown.Item key="listar_usuarios" color="warning">
+                    USUARIOS
                   </Dropdown.Item>
-                  <Dropdown.Item key="listar_inmueble">INMUEBLES</Dropdown.Item>
+                  
                 </Dropdown.Menu>
               </Dropdown>
             </Grid>
@@ -50,4 +48,4 @@ const MenuEspecialista = () => {
   );
 };
 
-export default MenuEspecialista;
+export default MenuAdmin;
