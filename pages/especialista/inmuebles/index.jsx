@@ -9,10 +9,13 @@ import {
 } from "../../../lib/auth";
 
 import { fetcher } from "../../../lib/api";
-import { Authentication, Layout } from "../../../components";
+import { Layout } from "../../../components";
 import LayoutEspecialista from "../../../components/especialista/LayoutEspecialista";
 import AddInmueble from "../../../components/inmueble/AddInmueble";
 import TableInmuebles from "../../../components/inmueble/TableInmuebles";
+import { Button, Grid, Row } from "@nextui-org/react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import PDFInmuebles from "../../../components/inmueble/PDFInmuebles";
 
 export default function inmuebles({ inmuebles, centrodecostos }) {
   const { user, loading } = useFetchUser();
@@ -39,52 +42,52 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
   return (
     <Layout user={user} titulo="Especialista" baseURL="./../">
       <LayoutEspecialista>
-        {!loading &&
-          (user ? (
-            <>
+        <>
+          <Grid>
+            <Row>
               <AddInmueble centrodecostos={centrodecostos} />
+              <PDFDownloadLink document={<PDFInmuebles inmuebles={data}/>} fileName="inmuebles.pdf">
+                <Button>Descargar PDF</Button>
+              </PDFDownloadLink>
+            </Row>
+          </Grid>
 
-              {inmuebles.data.length === 0 ? (
-                <h2>No existen Inmuebles registrados</h2>
-              ) : (
-                <>
-                  <TableInmuebles inmuebles={data} />
-                  <div className="space-x-2 space-y-2">
-                    <button
-                      className={`md:p-2 rounded py-2 text-black text-white p-2 ${
-                        pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
-                      }`}
-                      disabled={pageIndex === 1}
-                      onClick={() => setPageIndex(pageIndex - 1)}
-                    >
-                      {" "}
-                      <FaArrowAltCircleLeft />
-                    </button>
-                    <button
-                      className={`md:p-2 rounded py-2 text-black text-white p-2 ${
-                        pageIndex === (data && data.meta.pagination.pageCount)
-                          ? "bg-gray-300"
-                          : "bg-blue-400"
-                      }`}
-                      disabled={
-                        pageIndex === (data && data.meta.pagination.pageCount)
-                      }
-                      onClick={() => setPageIndex(pageIndex + 1)}
-                    >
-                      <FaArrowAltCircleRight />
-                    </button>
-                    <span>{`${pageIndex} de ${
-                      data && data.meta.pagination.pageCount
-                    }`}</span>
-                  </div>
-                </>
-              )}
-            </>
+          {inmuebles.data.length === 0 ? (
+            <h2>No existen Inmuebles registrados</h2>
           ) : (
-            <main>
-              <Authentication />
-            </main>
-          ))}
+            <>
+              <TableInmuebles inmuebles={data} />
+              <div className="space-x-2 space-y-2">
+                <button
+                  className={`md:p-2 rounded py-2 text-black text-white p-2 ${
+                    pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
+                  }`}
+                  disabled={pageIndex === 1}
+                  onClick={() => setPageIndex(pageIndex - 1)}
+                >
+                  {" "}
+                  <FaArrowAltCircleLeft />
+                </button>
+                <button
+                  className={`md:p-2 rounded py-2 text-black text-white p-2 ${
+                    pageIndex === (data && data.meta.pagination.pageCount)
+                      ? "bg-gray-300"
+                      : "bg-blue-400"
+                  }`}
+                  disabled={
+                    pageIndex === (data && data.meta.pagination.pageCount)
+                  }
+                  onClick={() => setPageIndex(pageIndex + 1)}
+                >
+                  <FaArrowAltCircleRight />
+                </button>
+                <span>{`${pageIndex} de ${
+                  data && data.meta.pagination.pageCount
+                }`}</span>
+              </div>
+            </>
+          )}
+        </>
       </LayoutEspecialista>
     </Layout>
   );

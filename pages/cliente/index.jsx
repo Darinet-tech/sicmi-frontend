@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Layout } from "../../components";
 import LayoutCliente from "../../components/LayoutCliente";
 import { useFetchUser } from "../../lib/authContext";

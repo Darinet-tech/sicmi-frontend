@@ -81,7 +81,6 @@ export const Authentication = () => {
                 fullWidth
                 color="primary"
                 size="lg"
-                labelPlaceholder="Usuario"
                 contentLeft={<Email fill="currentColor" />}
               />
               <Input
@@ -93,7 +92,6 @@ export const Authentication = () => {
                 fullWidth
                 color="primary"
                 size="lg"
-                labelPlaceholder="Contraseña"
                 contentLeft={<Password fill="currentColor" />}
               />
               <Row justify="space-between">
