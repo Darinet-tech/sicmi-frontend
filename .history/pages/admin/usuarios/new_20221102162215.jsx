@@ -18,7 +18,7 @@ export default function newPage({ roles, uos }) {
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
   const router = useRouter();
 
-  const [Usuario, setUsuario] = useState({
+  const [Usuario, setUsuario] = React.useState({
     username: "",
     email: "",
     role: "",
@@ -109,7 +109,7 @@ export default function newPage({ roles, uos }) {
 
                   <select name="role" onChange={handleChange}>
                     {roles &&
-                      roles.map((ccItem) => {
+                      roles.data.map((ccItem) => {
                         return (
                           <option key={ccItem.id} value={ccItem.id}>
                             {" "}
@@ -121,7 +121,7 @@ export default function newPage({ roles, uos }) {
 
                   <select name="unidadorganizativa" onChange={handleChange}>
                     {uos &&
-                      uos.map((ccItem) => {
+                      uos.data.map((ccItem) => {
                         return (
                           <option key={ccItem.id} value={ccItem.id}>
                             {" "}
@@ -181,8 +181,7 @@ export async function getServerSideProps({ req, params }) {
 
   return {
     props: {
-      roles: rolesResponse,
-      uos: uoResponse
+      role: centrosResponse,
     },
   };
 }

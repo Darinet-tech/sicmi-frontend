@@ -15,6 +15,7 @@ import TableUsuarios from "../../../components/usuario/TableUsuarios";
 
 export default function usuarios({ usuarios, roles, uos }) {
   const { user, loading } = useFetchUser();
+  const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
 
   const { data } = useSWR(

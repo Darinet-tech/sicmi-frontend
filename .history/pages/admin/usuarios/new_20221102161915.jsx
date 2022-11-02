@@ -18,7 +18,7 @@ export default function newPage({ roles, uos }) {
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
   const router = useRouter();
 
-  const [Usuario, setUsuario] = useState({
+  const [Usuario, setUsuario] = React.useState({
     username: "",
     email: "",
     role: "",
@@ -38,22 +38,21 @@ export default function newPage({ roles, uos }) {
   const handleSubmit = async () => {
     try {
       const responseData = await fetcher(
-        `${process.env.NEXT_PUBLIC_STRAPI_URL}/users`,
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/usuarios`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`,
           },
-          body: JSON.stringify({ data: Usuario }),
+          body: JSON.stringify({ data: usuario }),
         }
       );
-      router.reload();
+      router.push("/admin/usuarios");
     } catch (error) {
       console.log(error.message);
     }
   };
-
 
   return (
     <Layout user={user} titulo="Admin" baseURL="./../../">
@@ -70,7 +69,7 @@ export default function newPage({ roles, uos }) {
                 <Modal.Header>
                   <Text id="modal-title" size={18}>
                     <Text b size={18}>
-                      Adicionar Usuario
+                      Agregar Usuario
                     </Text>
                   </Text>
                 </Modal.Header>
@@ -109,7 +108,7 @@ export default function newPage({ roles, uos }) {
 
                   <select name="role" onChange={handleChange}>
                     {roles &&
-                      roles.map((ccItem) => {
+                      roles.data.map((ccItem) => {
                         return (
                           <option key={ccItem.id} value={ccItem.id}>
                             {" "}
@@ -121,7 +120,7 @@ export default function newPage({ roles, uos }) {
 
                   <select name="unidadorganizativa" onChange={handleChange}>
                     {uos &&
-                      uos.map((ccItem) => {
+                      uos.data.map((ccItem) => {
                         return (
                           <option key={ccItem.id} value={ccItem.id}>
                             {" "}
@@ -157,32 +156,20 @@ export async function getServerSideProps({ req, params }) {
       ? getTokenFromLocalCookie()
       : getTokenFromServerCookie(req);
 
-      const rolesResponse = await fetcher(
-        `${process.env.NEXT_PUBLIC_STRAPI_URL}/users-permissions/roles`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
-    
-      const uoResponse = await fetcher(
-        `${process.env.NEXT_PUBLIC_STRAPI_URL}/unidadorganizativas`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
+  const centrosResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/role`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
 
   return {
     props: {
-      roles: rolesResponse,
-      uos: uoResponse
+      role: centrosResponse,
     },
   };
 }

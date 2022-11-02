@@ -121,7 +121,7 @@ export default function newPage({ roles, uos }) {
 
                   <select name="unidadorganizativa" onChange={handleChange}>
                     {uos &&
-                      uos.map((ccItem) => {
+                      uos.data.map((ccItem) => {
                         return (
                           <option key={ccItem.id} value={ccItem.id}>
                             {" "}

@@ -15,24 +15,25 @@ import TableUsuarios from "../../../components/usuario/TableUsuarios";
 
 export default function usuarios({ usuarios, roles, uos }) {
   const { user, loading } = useFetchUser();
+  const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
 
-  const { data } = useSWR(
-    [
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/users?populate[0]=role&populate[1]=unidadorganizativa`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
-      },
-    ],
-    fetcher,
-    {
-      fallbackData: usuarios,
-    }
-  );
+  // const { data } = useSWR(
+  //   [
+  //     `${process.env.NEXT_PUBLIC_STRAPI_URL}/users?populate[0]=role&populate[1]=unidadorganizativa`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${jwt}`,
+  //       },
+  //     },
+  //   ],
+  //   fetcher,
+  //   {
+  //     fallbackData: usuarios,
+  //   }
+  // );
 
   return (
     <Layout user={user} titulo="Admin" baseURL="./../">

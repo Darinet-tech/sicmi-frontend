@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import useSWR from "swr";
 import { useFetchUser } from "../../../lib/authContext";
 import {
@@ -13,8 +14,9 @@ import AddUsuario from "../../../components/usuario/AddUsuario";
 import TableUsuarios from "../../../components/usuario/TableUsuarios";
 
 
-export default function usuarios({ usuarios, roles, uos }) {
+export default function usuario({ usuarios, roles, uos }) {
   const { user, loading } = useFetchUser();
+  const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
 
   const { data } = useSWR(
@@ -47,6 +49,34 @@ export default function usuarios({ usuarios, roles, uos }) {
               ) : (
                 <>
                   <TableUsuarios usuarios={data} />
+                  <div className="space-x-2 space-y-2">
+                    <button
+                      className={`md:p-2 rounded py-2 text-black text-white p-2 ${
+                        pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
+                      }`}
+                      disabled={pageIndex === 1}
+                      onClick={() => setPageIndex(pageIndex - 1)}
+                    >
+                      {" "}
+                      <FaArrowAltCircleLeft />
+                    </button>
+                    <button
+                      className={`md:p-2 rounded py-2 text-black text-white p-2 ${
+                        pageIndex === (data && data.meta.pagination.pageCount)
+                          ? "bg-gray-300"
+                          : "bg-blue-400"
+                      }`}
+                      disabled={
+                        pageIndex === (data && data.meta.pagination.pageCount)
+                      }
+                      onClick={() => setPageIndex(pageIndex + 1)}
+                    >
+                      <FaArrowAltCircleRight />
+                    </button>
+                    <span>{`${pageIndex} de ${
+                      data && data.meta.pagination.pageCount
+                    }`}</span>
+                  </div>
                 </>
               )}
             </>

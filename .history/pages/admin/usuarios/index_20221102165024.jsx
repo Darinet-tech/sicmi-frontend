@@ -13,8 +13,9 @@ import AddUsuario from "../../../components/usuario/AddUsuario";
 import TableUsuarios from "../../../components/usuario/TableUsuarios";
 
 
-export default function usuarios({ usuarios, roles, uos }) {
+export default function usuario({ usuarios, roles, uos }) {
   const { user, loading } = useFetchUser();
+  const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
 
   const { data } = useSWR(

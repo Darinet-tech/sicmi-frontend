@@ -109,7 +109,7 @@ export default function newPage({ roles, uos }) {
 
                   <select name="role" onChange={handleChange}>
                     {roles &&
-                      roles.map((ccItem) => {
+                      roles.data.map((ccItem) => {
                         return (
                           <option key={ccItem.id} value={ccItem.id}>
                             {" "}
@@ -121,7 +121,7 @@ export default function newPage({ roles, uos }) {
 
                   <select name="unidadorganizativa" onChange={handleChange}>
                     {uos &&
-                      uos.map((ccItem) => {
+                      uos.data.map((ccItem) => {
                         return (
                           <option key={ccItem.id} value={ccItem.id}>
                             {" "}
