@@ -1,10 +1,11 @@
 import React from "react";
 import { Modal, Button, Text, Input } from "@nextui-org/react";
-import { fetcher } from "../../lib/api";
-import { getTokenFromLocalCookie } from "../../lib/auth";
 import { useRouter } from "next/router";
 
-const AddUsuario = ({ roles = [], uos = [] }) => {
+import { fetcher } from "../../lib/api";
+import { getTokenFromLocalCookie } from "../../lib/auth";
+
+const AddUsuario = ({ roles, uos }) => {
   const router = useRouter();
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
@@ -98,7 +99,7 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
           />
 
           <select name="role" onChange={handleChange}>
-            {roles.length > 0 &&
+            {Array.isArray(roles) &&
               roles.map((ccItem) => {
                 return (
                   <option key={ccItem.id} value={ccItem.id}>
@@ -110,7 +111,7 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
           </select>
 
           <select name="unidadorganizativa" onChange={handleChange}>
-            {uos.length > 0 &&
+            {Array.isArray(uos) &&
               uos.map((ccItem) => {
                 return (
                   <option key={ccItem.id} value={ccItem.id}>
@@ -122,7 +123,7 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
           </select>
         </Modal.Body>
         <Modal.Footer>
-          <Button auto flat color="error" onClick={closeHandler}>
+          <Button auto color="error" onClick={closeHandler}>
             Cancelar
           </Button>
           <Button auto onClick={handleSubmit}>

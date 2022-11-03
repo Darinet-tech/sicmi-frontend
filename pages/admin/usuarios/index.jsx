@@ -1,5 +1,7 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
 import useSWR from "swr";
+import { Grid, Row } from "@nextui-org/react";
+
 import { useFetchUser } from "../../../lib/authContext";
 import {
   getTokenFromLocalCookie,
@@ -7,11 +9,10 @@ import {
 } from "../../../lib/auth";
 
 import { fetcher } from "../../../lib/api";
-import { Authentication, Layout } from "../../../components";
+import { Layout } from "../../../components";
 import LayoutAdmin from "../../../components/admin/LayoutAdmin";
 import AddUsuario from "../../../components/usuario/AddUsuario";
 import TableUsuarios from "../../../components/usuario/TableUsuarios";
-
 
 export default function usuarios({ usuarios, roles, uos }) {
   const { user, loading } = useFetchUser();
@@ -37,11 +38,12 @@ export default function usuarios({ usuarios, roles, uos }) {
   return (
     <Layout user={user} titulo="Admin" baseURL="./../">
       <LayoutAdmin>
-        {!loading &&
-          (user ? (
-            <>
+        <>
+          <Grid>
+            <Row>
               <AddUsuario roles={roles} uos={uos} />
-
+            </Row>
+            <Row>
               {usuarios.length === 0 ? (
                 <h2>No existen Usuarios registrados</h2>
               ) : (
@@ -49,12 +51,9 @@ export default function usuarios({ usuarios, roles, uos }) {
                   <TableUsuarios usuarios={data} />
                 </>
               )}
-            </>
-          ) : (
-            <main>
-              <Authentication />
-            </main>
-          ))}
+            </Row>
+          </Grid>
+        </>
       </LayoutAdmin>
     </Layout>
   );
@@ -103,7 +102,7 @@ export async function getServerSideProps({ req, params }) {
     props: {
       usuarios: usuariosResponse,
       roles: rolesResponse,
-      uos: uoResponse
+      uos: uoResponse,
     },
   };
 }

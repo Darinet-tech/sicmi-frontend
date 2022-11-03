@@ -72,6 +72,7 @@ const AddInmueble = ({ centrodecostos }) => {
             color="primary"
             size="lg"
             placeholder="Descripci&oacute;n"
+            aria-label="Descripci&oacute;n"
           />
           <Input
             name="direccion"
@@ -82,6 +83,7 @@ const AddInmueble = ({ centrodecostos }) => {
             color="primary"
             size="lg"
             placeholder="Direcci&oacute;n"
+            aria-label="Direcci&oacute;n"
           />
           <select name="centrodecosto" onChange={handleChange}>
             {centrodecostos &&
@@ -96,7 +98,7 @@ const AddInmueble = ({ centrodecostos }) => {
           </select>
         </Modal.Body>
         <Modal.Footer>
-          <Button auto flat color="error" onClick={closeHandler}>
+          <Button auto color="error" onClick={closeHandler}>
             Cancelar
           </Button>
           <Button auto onClick={handleSubmit}>

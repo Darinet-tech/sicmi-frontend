@@ -1,7 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from "react";
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
+import { Button, Grid, Row } from "@nextui-org/react";
+import { useRouter } from "next/router";
 import useSWR from "swr";
+
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import { useFetchUser } from "../../../lib/authContext";
 import {
   getTokenFromLocalCookie,
@@ -13,8 +16,6 @@ import { Layout } from "../../../components";
 import LayoutEspecialista from "../../../components/especialista/LayoutEspecialista";
 import AddInmueble from "../../../components/inmueble/AddInmueble";
 import TableInmuebles from "../../../components/inmueble/TableInmuebles";
-import { Button, Grid, Row } from "@nextui-org/react";
-import { useRouter } from "next/router";
 
 export default function inmuebles({ inmuebles, centrodecostos }) {
   const { user, loading } = useFetchUser();
