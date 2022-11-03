@@ -14,13 +14,13 @@ import LayoutEspecialista from "../../../components/especialista/LayoutEspeciali
 import AddInmueble from "../../../components/inmueble/AddInmueble";
 import TableInmuebles from "../../../components/inmueble/TableInmuebles";
 import { Button, Grid, Row } from "@nextui-org/react";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import PDFInmuebles from "../../../components/inmueble/PDFInmuebles";
+import { useRouter } from "next/router";
 
 export default function inmuebles({ inmuebles, centrodecostos }) {
   const { user, loading } = useFetchUser();
   const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
+  const router = useRouter();
 
   const { data } = useSWR(
     [
@@ -46,50 +46,71 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
           <Grid>
             <Row>
               <AddInmueble centrodecostos={centrodecostos} />
+<<<<<<< HEAD
               <PDFDownloadLink
                 document={<PDFInmuebles inmuebles={data} />}
                 fileName="inmuebles.pdf"
               >
                 <Button>Descargar PDF</Button>
               </PDFDownloadLink>
+=======
+              <Button
+                ghost
+                auto
+                onClick={() => router.push("/especialista/inmuebles/all")}
+              >
+                Mostrar todos
+              </Button>
+            </Row>
+            <Row>
+              {inmuebles.data.length === 0 ? (
+                <h2>No existen Inmuebles registrados</h2>
+              ) : (
+                <TableInmuebles inmuebles={data} />
+              )}
+            </Row>
+            <Row>
+              <Grid.Container gap={2}>
+                <Grid>
+                  <Button
+                    auto
+                    rounded
+                    className={`${
+                      pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
+                    }`}
+                    disabled={pageIndex === 1}
+                    onClick={() => setPageIndex(pageIndex - 1)}
+                  >
+                    {" "}
+                    <FaArrowAltCircleLeft />
+                  </Button>
+                </Grid>
+                <Grid>
+                  <Button
+                    auto
+                    rounded
+                    className={`${
+                      pageIndex === (data && data.meta.pagination.pageCount)
+                        ? "bg-gray-300"
+                        : "bg-blue-400"
+                    }`}
+                    disabled={
+                      pageIndex === (data && data.meta.pagination.pageCount)
+                    }
+                    onClick={() => setPageIndex(pageIndex + 1)}
+                  >
+                    <FaArrowAltCircleRight />
+                  </Button>
+                </Grid>
+                <Grid>
+                  <span>{`${pageIndex} de ${
+                    data && data.meta.pagination.pageCount
+                  }`}</span>
+                </Grid>
+              </Grid.Container>
+>>>>>>> 3fbc14a8b0ed8ea154c0780d20ebab1347fa2f6e
             </Row>
           </Grid>
-
-          {inmuebles.data.length === 0 ? (
-            <h2>No existen Inmuebles registrados</h2>
-          ) : (
-            <>
-              <TableInmuebles inmuebles={data} />
-              <div className="space-x-2 space-y-2">
-                <button
-                  className={`md:p-2 rounded py-2 text-black text-white p-2 ${
-                    pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
-                  }`}
-                  disabled={pageIndex === 1}
-                  onClick={() => setPageIndex(pageIndex - 1)}
-                >
-                  {" "}
-                  <FaArrowAltCircleLeft />
-                </button>
-                <button
-                  className={`md:p-2 rounded py-2 text-black text-white p-2 ${
-                    pageIndex === (data && data.meta.pagination.pageCount)
-                      ? "bg-gray-300"
-                      : "bg-blue-400"
-                  }`}
-                  disabled={
-                    pageIndex === (data && data.meta.pagination.pageCount)
-                  }
-                  onClick={() => setPageIndex(pageIndex + 1)}
-                >
-                  <FaArrowAltCircleRight />
-                </button>
-                <span>{`${pageIndex} de ${
-                  data && data.meta.pagination.pageCount
-                }`}</span>
-              </div>
-            </>
-          )}
         </>
       </LayoutEspecialista>
     </Layout>
