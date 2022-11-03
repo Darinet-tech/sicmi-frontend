@@ -158,6 +158,7 @@ const TableInmuebles = ({ inmuebles }) => {
                 </Table.Row>
               );
             })}
+          inmuebles
         </Table.Body>
       </Table>
     </>

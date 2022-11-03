@@ -46,7 +46,10 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
           <Grid>
             <Row>
               <AddInmueble centrodecostos={centrodecostos} />
-              <PDFDownloadLink document={<PDFInmuebles inmuebles={data}/>} fileName="inmuebles.pdf">
+              <PDFDownloadLink
+                document={<PDFInmuebles inmuebles={data} />}
+                fileName="inmuebles.pdf"
+              >
                 <Button>Descargar PDF</Button>
               </PDFDownloadLink>
             </Row>
