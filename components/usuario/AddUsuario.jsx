@@ -4,8 +4,9 @@ import { useRouter } from "next/router";
 
 import { fetcher } from "../../lib/api";
 import { getTokenFromLocalCookie } from "../../lib/auth";
+import { Password } from "../Password";
 
-const AddUsuario = ({ roles, uos }) => {
+const AddUsuario = ({ roles = [], uos = [] }) => {
   const router = useRouter();
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
@@ -14,15 +15,19 @@ const AddUsuario = ({ roles, uos }) => {
     setVisible(false);
   };
 
+  const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
+
   const [Usuario, setUsuario] = React.useState({
     username: "",
     email: "",
-    role: "",
-    unidadorganizativa: "",
+    role: roles.length > 0 ? roles[0].id : "",
+    unidadorganizativa: uos.data.length > 0 ? uos.data[0].id : "",
     cargo: "",
+    blocked: false,
+    confirmed: true,
+    provider: "local",
+    password: "",
   });
-
-  const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
 
   const handleChange = (e) => {
     setUsuario({ ...Usuario, [e.target.name]: e.target.value });
@@ -38,7 +43,7 @@ const AddUsuario = ({ roles, uos }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`,
           },
-          body: JSON.stringify({ data: Usuario }),
+          body: JSON.stringify(Usuario),
         }
       );
       router.reload();
@@ -75,6 +80,7 @@ const AddUsuario = ({ roles, uos }) => {
             color="primary"
             size="lg"
             placeholder="Usuario"
+            required            
           />
           <Input
             name="email"
@@ -85,6 +91,7 @@ const AddUsuario = ({ roles, uos }) => {
             color="primary"
             size="lg"
             placeholder="Correo"
+            required
           />
 
           <Input
@@ -99,8 +106,8 @@ const AddUsuario = ({ roles, uos }) => {
           />
 
           <select name="role" onChange={handleChange}>
-            {Array.isArray(roles) &&
-              roles.map((ccItem) => {
+            {Array.isArray(roles.roles) &&
+              roles.roles.map((ccItem) => {
                 return (
                   <option key={ccItem.id} value={ccItem.id}>
                     {" "}
@@ -111,16 +118,30 @@ const AddUsuario = ({ roles, uos }) => {
           </select>
 
           <select name="unidadorganizativa" onChange={handleChange}>
-            {Array.isArray(uos) &&
-              uos.map((ccItem) => {
+            {Array.isArray(uos.data) &&
+              uos.data.map((ccItem) => {
                 return (
                   <option key={ccItem.id} value={ccItem.id}>
                     {" "}
-                    {ccItem.nombre}{" "}
+                    {ccItem.attributes.acronimo} {ccItem.attributes.nombre}
                   </option>
                 );
               })}
           </select>
+
+          <Input
+           label="Clave de acceso"
+            type="password"
+            name="password"
+            onChange={handleChange}
+            clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
+            contentLeft={<Password fill="currentColor" />}
+            required
+          />          
         </Modal.Body>
         <Modal.Footer>
           <Button auto color="error" onClick={closeHandler}>

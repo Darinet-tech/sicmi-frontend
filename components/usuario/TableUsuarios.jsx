@@ -16,6 +16,7 @@ import { DeleteIcon } from "../icons/DeleteIcon";
 import { useRouter } from "next/router";
 import { getTokenFromLocalCookie } from "../../lib/auth";
 import { fetcher } from "../../lib/api";
+import { StyledBadge } from "../StyledBadge";
 
 const TableUsuarios = ({ usuarios }) => {
   const router = useRouter();
@@ -119,33 +120,38 @@ const TableUsuarios = ({ usuarios }) => {
                   return (
                     <Table.Row key={userItem.id}>
                       <Table.Cell>
-                        <Text b size={14} css={{ tt: "capitalize" }}>
+                        <Text b size={14} >
                           {userItem.username}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} css={{ tt: "capitalize" }}>
+                        <Text b size={14} >
                           {userItem.email}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} css={{ tt: "capitalize" }}>
+                        <Text b size={14} >
                           {userItem.cargo}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} css={{ tt: "capitalize" }}>
+                        <Text b size={14} >
                           {userItem.role ? userItem.role.name : ""}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} css={{ tt: "capitalize" }}>
+                        <Text b size={14} >
                           {userItem.unidadorganizativa
                             ? userItem.unidadorganizativa.nombre
                             : ""}
                         </Text>
                       </Table.Cell>
-                      <Table.Cell>{userItem.blocked}</Table.Cell>
+                      <Table.Cell>
+                        {userItem.blocked}
+                        <StyledBadge type={userItem.blocked ? "Bloqueado" : "Activo"}>
+                          {userItem.blocked ? "Bloqueado" : "Activo"}
+                        </StyledBadge>
+                      </Table.Cell>
                       <Table.Cell>
                         <Row justify="center" align="center">
                           <Col css={{ d: "flex" }}>

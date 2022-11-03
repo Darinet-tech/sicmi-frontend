@@ -76,6 +76,7 @@ export async function getServerSideProps({ req, params }) {
     }
   );
 
+
   const rolesResponse = await fetcher(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}/users-permissions/roles`,
     {
@@ -87,6 +88,7 @@ export async function getServerSideProps({ req, params }) {
     }
   );
 
+  
   const uoResponse = await fetcher(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}/unidadorganizativas`,
     {

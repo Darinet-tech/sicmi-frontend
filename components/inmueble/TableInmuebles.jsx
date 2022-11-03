@@ -116,17 +116,17 @@ const TableInmuebles = ({ inmuebles }) => {
                   return (
                     <Table.Row key={inmuebleItem.id}>
                       <Table.Cell>
-                        <Text b size={14} css={{ tt: "capitalize" }}>
+                        <Text b size={14} >
                           {inmuebleItem.attributes.descripcion}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} css={{ tt: "capitalize" }}>
+                        <Text b size={14} >
                           {inmuebleItem.attributes.direccion}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} css={{ tt: "capitalize" }}>
+                        <Text b size={14} >
                           {inmuebleItem.attributes.centrodecosto.data
                             ? inmuebleItem.attributes.centrodecosto.data
                                 .attributes.centrocosto
