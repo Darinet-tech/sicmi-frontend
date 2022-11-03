@@ -39,16 +39,18 @@ export default function all_inmuebles({ inmuebles }) {
               ) : (
                 <div
                   ref={componentRef}
-                  style={{ width: "100%", height: window.innerHeight }}
+                  style={{ width: "100%", height:(typeof window !== 'undefined')?window.innerHeight:"60%" }}
                 >
                   <h1>Listado de Inmuebles</h1>
 
                   <table>
                     <thead>
-                      <th>No.</th>
-                      <th>DESCRIPCI&Oacute;N</th>
-                      <th>DIRECCI&Oacute;N</th>
-                      <th>CENTRO DE COSTO</th>
+                      <tr>
+                        <th>No.</th>
+                        <th>DESCRIPCI&Oacute;N</th>
+                        <th>DIRECCI&Oacute;N</th>
+                        <th>CENTRO DE COSTO</th>
+                      </tr>
                     </thead>
                     <tbody>
                       {inmuebles &&
