@@ -148,6 +148,7 @@ export default function editPage({ roles, uos }) {
                 name="role"
                 onChange={handleChange}
                 value={usuario.role}
+                className="dropdown-dark"
               >
                 {Array.isArray(roles.roles) &&
                   roles.roles.map((ccItem) => {
@@ -164,6 +165,7 @@ export default function editPage({ roles, uos }) {
                 name="unidadorganizativa"
                 onChange={handleChange}
                 value={usuario.unidadorganizativa}
+                className="dropdown-dark"
               >
                 {Array.isArray(uos.data) &&
                   uos.data.map((ccItem) => {

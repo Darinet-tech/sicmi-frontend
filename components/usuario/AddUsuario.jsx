@@ -105,7 +105,7 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
             placeholder="Cargo"
           />
 
-          <select name="role" onChange={handleChange}>
+          <select name="role" onChange={handleChange} className="dropdown-dark">
             {Array.isArray(roles.roles) &&
               roles.roles.map((ccItem) => {
                 return (
@@ -117,7 +117,7 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
               })}
           </select>
 
-          <select name="unidadorganizativa" onChange={handleChange}>
+          <select name="unidadorganizativa" onChange={handleChange} className="dropdown-dark">
             {Array.isArray(uos.data) &&
               uos.data.map((ccItem) => {
                 return (

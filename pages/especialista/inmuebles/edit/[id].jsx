@@ -124,6 +124,7 @@ export default function editPage({ centrodecostos }) {
                 name="centrodecosto"
                 onChange={handleChange}
                 value={inmueble.centrodecosto}
+                className="dropdown-dark"
               >
                 {centrodecostos &&
                   centrodecostos.data.map((ccItem) => {

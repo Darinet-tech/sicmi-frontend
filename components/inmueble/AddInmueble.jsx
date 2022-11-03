@@ -83,7 +83,7 @@ const AddInmueble = ({ centrodecostos }) => {
             size="lg"
             placeholder="Direcci&oacute;n"
           />
-          <select name="centrodecosto" onChange={handleChange}>
+          <select name="centrodecosto" onChange={handleChange} className="dropdown-dark">
             {centrodecostos &&
               centrodecostos.data.map((ccItem) => {
                 return (
