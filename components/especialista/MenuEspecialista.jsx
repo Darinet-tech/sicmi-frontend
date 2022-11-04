@@ -9,7 +9,7 @@ const MenuEspecialista = () => {
       case "listar_solicitud":
         router.push("../especialista/solicitudes");
         break;
-      case "listar_inmueble":
+      case "listar_inmuebles":
         router.push("/especialista/inmuebles");
         break;
       default:
@@ -29,17 +29,21 @@ const MenuEspecialista = () => {
           <Grid.Container gap={1} justify="flex-start">
             <Grid xl={12}>
               <Dropdown>
-                <Dropdown.Button>MENU</Dropdown.Button>
+                <Dropdown.Button light bordered color="gradient">
+                  MENU
+                </Dropdown.Button>
                 <Dropdown.Menu
-                  variant="light"
+                  variant="shadow"
                   aria-label="Actions"
                   css={{ textAlign: "center", height: "max-content" }}
                   onAction={goto}
                 >
-                  <Dropdown.Item key="listar_solicitud" color="warning">
+                  <Dropdown.Item key="listar_solicitud" color="primary">
                     SOLICITUDES
                   </Dropdown.Item>
-                  <Dropdown.Item key="listar_inmueble">INMUEBLES</Dropdown.Item>
+                  <Dropdown.Item key="listar_inmuebles" color="secondary">
+                    INMUEBLES
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </Grid>

@@ -8,7 +8,9 @@ const MenuAdmin = () => {
     switch (key) {
       case "listar_usuarios":
         router.push("../admin/usuarios");
-        break;   
+        break;
+      case "listar_inmuebles":
+        router.push("/especialista/inmuebles");
       default:
         break;
     }
