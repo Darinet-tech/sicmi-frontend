@@ -3,7 +3,12 @@ import { Modal, Input, Row, Checkbox, Button, Text } from "@nextui-org/react";
 import { Email } from "../components";
 import { Password } from "../components";
 import styles from "../styles/authentication.module.css";
-import { setToken, unsetToken } from "../lib/auth";
+import {
+  getTokenFromLocalCookie,
+  redirectByRole,
+  setRolUO,
+  setToken,
+} from "../lib/auth";
 import { useUser } from "../lib/authContext";
 import { fetcher } from "../lib/api";
 
@@ -25,7 +30,7 @@ export const Authentication = () => {
 
   const handleSubmit = async () => {
     try {
-      const responseData = await fetcher(
+      const responseAuth = await fetcher(
         `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local`,
         {
           method: "POST",
@@ -38,7 +43,8 @@ export const Authentication = () => {
           }),
         }
       );
-      setToken(responseData);
+
+      setToken(responseAuth);
     } catch (error) {
       console.log(error.message);
     }

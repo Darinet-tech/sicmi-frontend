@@ -143,7 +143,7 @@ export default function editPage({ roles, uos }) {
                 value={usuario.cargo}
                 placeholder="Cargo"
               />
-
+              <label>Rol</label>
               <select
                 name="role"
                 onChange={handleChange}
@@ -160,7 +160,7 @@ export default function editPage({ roles, uos }) {
                     );
                   })}
               </select>
-
+              <label>Unidad organizativa</label>
               <select
                 name="unidadorganizativa"
                 onChange={handleChange}
@@ -181,8 +181,8 @@ export default function editPage({ roles, uos }) {
                 name="confirmed"
                 color="success"
                 defaultSelected={usuario.confirmed}
-                onChange={(newvalue)=>{
-                  setUsuario({ ...usuario, ["confirmed"]: newvalue })
+                onChange={(newvalue) => {
+                  setUsuario({ ...usuario, ["confirmed"]: newvalue });
                 }}
               >
                 Confirmado
@@ -191,15 +191,15 @@ export default function editPage({ roles, uos }) {
                 name="blocked"
                 color="error"
                 defaultSelected={usuario.blocked}
-                onChange={(newvalue)=>{
-                  setUsuario({ ...usuario, ["blocked"]: newvalue })
+                onChange={(newvalue) => {
+                  setUsuario({ ...usuario, ["blocked"]: newvalue });
                 }}
               >
                 Bloqueado
               </Checkbox>
             </Modal.Body>
             <Modal.Footer>
-              <Button auto flat color="error" onClick={closeHandler}>
+              <Button auto color="error" onClick={closeHandler}>
                 Cancelar
               </Button>
               <Button auto onClick={handleSubmit}>

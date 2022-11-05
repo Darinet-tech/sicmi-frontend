@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useFetchUser } from "../../lib/authContext";
+import { useFetchUser } from "../../../lib/authContext";
 import { Table, Button, Card, Row, Spacer, Text } from "@nextui-org/react";
 import { useState } from "react";
 import useSWR from "swr";
 import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
-} from "../../lib/auth";
-import { fetcher } from "../../lib/api";
-import { Authentication, Layout } from "../../components";
-import LayoutEspecialista from "../../components/LayoutEspecialista";
+} from "../../../lib/auth";
+import { fetcher } from "../../../lib/api";
+import { Authentication, Layout } from "../../../components";
+import LayoutEspecialista from "../../../components/especialista/LayoutEspecialista";
 
 export default function solicitudes({ inmuebles }) {
   const { user, loading } = useFetchUser();

@@ -1,10 +1,19 @@
 import React from "react";
-import { Modal, Button, Text, Input } from "@nextui-org/react";
+import {
+  Modal,
+  Button,
+  Text,
+  Input,
+  StyledInputLabel,
+} from "@nextui-org/react";
 import { fetcher } from "../../lib/api";
-import { getTokenFromLocalCookie } from "../../lib/auth";
+import { getTokenFromLocalCookie, getUOFromLocalCookie } from "../../lib/auth";
 import { useRouter } from "next/router";
 
 const AddInmueble = ({ centrodecostos }) => {
+  const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
+  const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";
+
   const router = useRouter();
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
@@ -17,9 +26,8 @@ const AddInmueble = ({ centrodecostos }) => {
     descripcion: "",
     direccion: "",
     centrodecosto: "",
+    unidadorganizativa: uo,
   });
-
-  const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
 
   const handleChange = (e) => {
     setInmueble({ ...inmueble, [e.target.name]: e.target.value });
@@ -83,7 +91,12 @@ const AddInmueble = ({ centrodecostos }) => {
             size="lg"
             placeholder="Direcci&oacute;n"
           />
-          <select name="centrodecosto" onChange={handleChange} className="dropdown-dark">
+          <label>Centro de costos</label>
+          <select
+            name="centrodecosto"
+            onChange={handleChange}
+            className="dropdown-dark"
+          >
             {centrodecostos &&
               centrodecostos.data.map((ccItem) => {
                 return (
@@ -96,10 +109,10 @@ const AddInmueble = ({ centrodecostos }) => {
           </select>
         </Modal.Body>
         <Modal.Footer>
-          <Button auto flat color="error" onClick={closeHandler}>
+          <Button auto onClick={closeHandler} color="error">
             Cancelar
           </Button>
-          <Button auto onClick={handleSubmit}>
+          <Button auto onClick={handleSubmit} color="success">
             Adicionar
           </Button>
         </Modal.Footer>

@@ -2,16 +2,15 @@ import React from "react";
 import { Button, Card, Grid, Dropdown } from "@nextui-org/react";
 import { useRouter } from "next/router";
 
-
 const MenuCliente = () => {
   const router = useRouter();
   const goto = (key) => {
     switch (key) {
       case "crear_solicitud":
-        router.push("../cliente/solicitud");
+        router.push("../cliente/solicitudes/new");
         break;
-      case "listar_solicitud":
-        
+      case "listar_solicitudes":
+        router.push("../cliente/solicitudes");
         break;
 
       default:
@@ -37,7 +36,7 @@ const MenuCliente = () => {
                   color="gradient"
                   style={{ width: "100%" }}
                 >
-                  SOLICITUD
+                  MENU
                 </Dropdown.Button>
                 <Dropdown.Menu
                   variant="shadow"
@@ -48,8 +47,8 @@ const MenuCliente = () => {
                   <Dropdown.Item key="crear_solicitud" color="success">
                     CREAR SOLICITUD
                   </Dropdown.Item>
-                  <Dropdown.Item key="listar_solicitud" color="warning">
-                    LISTAR SOLICITUD
+                  <Dropdown.Item key="listar_solicitudes" color="warning">
+                    LISTAR MIS SOLICITUDES
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

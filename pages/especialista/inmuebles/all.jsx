@@ -4,6 +4,8 @@ import { useFetchUser } from "../../../lib/authContext";
 import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
+  getUOFromLocalCookie,
+  getUOFromServerCookie,
 } from "../../../lib/auth";
 
 import { fetcher } from "../../../lib/api";
@@ -39,7 +41,13 @@ export default function all_inmuebles({ inmuebles }) {
               ) : (
                 <div
                   ref={componentRef}
-                  style={{ width: "100%", height:(typeof window !== 'undefined')?window.innerHeight:"60%" }}
+                  style={{
+                    width: "100%",
+                    height:
+                      typeof window !== "undefined"
+                        ? window.innerHeight
+                        : "60%",
+                  }}
                 >
                   <h1>Listado de Inmuebles</h1>
 
@@ -87,8 +95,13 @@ export async function getServerSideProps({ req, params }) {
       ? getTokenFromLocalCookie()
       : getTokenFromServerCookie(req);
 
+  const uo =
+    typeof window !== "undefined"
+      ? getUOFromLocalCookie()
+      : getUOFromServerCookie(req);
+
   const inmueblesResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?populate[0]=centrodecosto`,
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?populate[0]=centrodecosto&filters[unidadorganizativa][id][$eq]=${uo}`,
     {
       method: "GET",
       headers: {

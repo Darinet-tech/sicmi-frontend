@@ -80,7 +80,7 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
             color="primary"
             size="lg"
             placeholder="Usuario"
-            required            
+            required
           />
           <Input
             name="email"
@@ -104,7 +104,7 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
             size="lg"
             placeholder="Cargo"
           />
-
+          <label>Rol</label>
           <select name="role" onChange={handleChange} className="dropdown-dark">
             {Array.isArray(roles.roles) &&
               roles.roles.map((ccItem) => {
@@ -116,8 +116,12 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
                 );
               })}
           </select>
-
-          <select name="unidadorganizativa" onChange={handleChange} className="dropdown-dark">
+          <label>Unidad organizativa</label>
+          <select
+            name="unidadorganizativa"
+            onChange={handleChange}
+            className="dropdown-dark"
+          >
             {Array.isArray(uos.data) &&
               uos.data.map((ccItem) => {
                 return (
@@ -130,7 +134,6 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
           </select>
 
           <Input
-           label="Clave de acceso"
             type="password"
             name="password"
             onChange={handleChange}
@@ -141,13 +144,13 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
             size="lg"
             contentLeft={<Password fill="currentColor" />}
             required
-          />          
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button auto color="error" onClick={closeHandler}>
             Cancelar
           </Button>
-          <Button auto onClick={handleSubmit}>
+          <Button auto color="success" onClick={handleSubmit}>
             Adicionar
           </Button>
         </Modal.Footer>

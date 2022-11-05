@@ -9,18 +9,21 @@ import LayoutEspecialista from "../../../../components/especialista/LayoutEspeci
 import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
+  getUOFromLocalCookie,
 } from "../../../../lib/auth";
 import { fetcher } from "../../../../lib/api";
 
 export default function editPage({ centrodecostos }) {
   const { user, loading } = useFetchUser();
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
+  const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";
   const router = useRouter();
   const [inmueble, setInmueble] = useState({
     id: "",
     descripcion: "",
     direccion: "",
     centrodecosto: "",
+    unidadorganizativa: uo,
   });
 
   const closeHandler = () => {
@@ -86,66 +89,74 @@ export default function editPage({ centrodecostos }) {
     <Layout user={user} titulo="Especialista" baseURL="./../../../">
       <LayoutEspecialista>
         <>
-          <Modal
-            closeButton
-            aria-labelledby="modal-title"
-            open={true}
-            onClose={closeHandler}
-          >
-            <Modal.Header>
-              <Text id="modal-title" size={18}>
-                <Text b size={18}>
-                  Editar Inmueble
+          {uo ? (
+            <Modal
+              closeButton
+              aria-labelledby="modal-title"
+              open={true}
+              onClose={closeHandler}
+            >
+              <Modal.Header>
+                <Text id="modal-title" size={18}>
+                  <Text b size={18}>
+                    Editar Inmueble
+                  </Text>
                 </Text>
-              </Text>
-            </Modal.Header>
-            <Modal.Body>
-              <Input
-                name="descripcion"
-                onChange={handleChange}
-                clearable
-                bordered
-                fullWidth
-                color="primary"
-                size="lg"
-                value={inmueble.descripcion}
-              />
-              <Input
-                name="direccion"
-                onChange={handleChange}
-                clearable
-                bordered
-                fullWidth
-                color="primary"
-                size="lg"
-                value={inmueble.direccion}
-              />
-              <select
-                name="centrodecosto"
-                onChange={handleChange}
-                value={inmueble.centrodecosto}
-                className="dropdown-dark"
-              >
-                {centrodecostos &&
-                  centrodecostos.data.map((ccItem) => {
-                    return (
-                      <option key={ccItem.id} value={ccItem.id}>
-                        {" "}
-                        {ccItem.attributes.centrocosto}{" "}
-                      </option>
-                    );
-                  })}
-              </select>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button auto flat color="error" onClick={closeHandler}>
-                Cancelar
-              </Button>
-              <Button auto onClick={handleSubmit}>
-                Salvar
-              </Button>
-            </Modal.Footer>
-          </Modal>
+              </Modal.Header>
+              <Modal.Body>
+                <Input
+                  name="descripcion"
+                  onChange={handleChange}
+                  clearable
+                  bordered
+                  fullWidth
+                  color="primary"
+                  size="lg"
+                  value={inmueble.descripcion}
+                />
+                <Input
+                  name="direccion"
+                  onChange={handleChange}
+                  clearable
+                  bordered
+                  fullWidth
+                  color="primary"
+                  size="lg"
+                  value={inmueble.direccion}
+                />
+                <label>Centro de costo</label>
+                <select
+                  name="centrodecosto"
+                  onChange={handleChange}
+                  value={inmueble.centrodecosto}
+                  className="dropdown-dark"
+                >
+                  {centrodecostos &&
+                    centrodecostos.data.map((ccItem) => {
+                      return (
+                        <option key={ccItem.id} value={ccItem.id}>
+                          {" "}
+                          {ccItem.attributes.centrocosto}{" "}
+                        </option>
+                      );
+                    })}
+                </select>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button auto color="error" onClick={closeHandler}>
+                  Cancelar
+                </Button>
+                <Button auto onClick={handleSubmit}>
+                  Salvar
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          ) : (
+            <h3>
+              Usted no tiene asignado ninguna Unidad Organizativa, por favor
+              contacte con su Administrador
+            </h3>
+          )}
         </>
       </LayoutEspecialista>
     </Layout>

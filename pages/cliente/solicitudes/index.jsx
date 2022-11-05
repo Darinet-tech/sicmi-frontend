@@ -1,4 +1,5 @@
-import { useFetchUser } from "../../lib/authContext";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useFetchUser } from "../../../lib/authContext";
 import Select from "react-select";
 import {
   Spacer,
@@ -14,11 +15,11 @@ import useSWR from "swr";
 import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
-} from "../../lib/auth";
-import { fetcher } from "../../lib/api";
-import { Authentication, Layout } from "../../components";
+} from "../../../lib/auth";
+import { fetcher } from "../../../lib/api";
+import { Authentication, Layout } from "../../../components";
 
-import LayoutCliente from "../../components/cliente/LayoutCliente";
+import LayoutCliente from "../../../components/cliente/LayoutCliente";
 
 export default function solicitud({ solicitud }) {
   const { user, loading } = useFetchUser();
@@ -126,7 +127,7 @@ export default function solicitud({ solicitud }) {
                       onChange={handleSelectChange}
                       styles={{ width: "400px", color: "black" }}
                     />
-<Spacer></Spacer>
+                    <Spacer></Spacer>
                     <Textarea
                       bordered
                       color="white"
@@ -136,7 +137,7 @@ export default function solicitud({ solicitud }) {
                       placeholder="Introduzca una breve descripción de la deficiencia o afectación"
                       width="100%"
                     />
-<Spacer></Spacer>
+                    <Spacer></Spacer>
                     <Select
                       defaultValue={{
                         label: "Nombre y Apellidos",
