@@ -20,8 +20,8 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
   const [Usuario, setUsuario] = React.useState({
     username: "",
     email: "",
-    role: roles.length > 0 ? roles[0].id : "",
-    unidadorganizativa: uos.data.length > 0 ? uos.data[0].id : "",
+    role: roles.length > 0 ? roles[0].id : null,
+    unidadorganizativa: uos.data.length > 0 ? uos.data[0].id : null,
     cargo: "",
     blocked: false,
     confirmed: true,
@@ -106,6 +106,7 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
           />
           <label>Rol</label>
           <select name="role" onChange={handleChange} className="dropdown-dark">
+            <option>Seleccione un rol</option>
             {Array.isArray(roles.roles) &&
               roles.roles.map((ccItem) => {
                 return (
@@ -122,6 +123,7 @@ const AddUsuario = ({ roles = [], uos = [] }) => {
             onChange={handleChange}
             className="dropdown-dark"
           >
+            <option>Seleccione una unidad organizativa</option>
             {Array.isArray(uos.data) &&
               uos.data.map((ccItem) => {
                 return (

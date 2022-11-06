@@ -4,7 +4,7 @@ import { fetcher } from "../../lib/api";
 import { getTokenFromLocalCookie, getUOFromLocalCookie } from "../../lib/auth";
 import { useRouter } from "next/router";
 
-const AddInmueble = ({ centrodecostos }) => {
+const AddArea = ({ responsables }) => {
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
   const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";
 
@@ -16,28 +16,27 @@ const AddInmueble = ({ centrodecostos }) => {
     setVisible(false);
   };
 
-  const [inmueble, setInmueble] = React.useState({
-    descripcion: "",
-    direccion: "",
-    centrodecosto: null,
+  const [area, setArea] = React.useState({
+    nombre: "",
+    responsable: null,
     unidadorganizativa: uo,
   });
 
   const handleChange = (e) => {
-    setInmueble({ ...inmueble, [e.target.name]: e.target.value });
+    setArea({ ...area, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
     try {
       const responseData = await fetcher(
-        `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles`,
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/areas`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`,
           },
-          body: JSON.stringify({ data: inmueble }),
+          body: JSON.stringify({ data: area }),
         }
       );
       router.reload();
@@ -49,7 +48,7 @@ const AddInmueble = ({ centrodecostos }) => {
   return (
     <div>
       <Button ghost auto onClick={handler}>
-        Adicionar Inmueble
+        Adicionar Area
       </Button>
       <Modal
         closeButton
@@ -60,44 +59,34 @@ const AddInmueble = ({ centrodecostos }) => {
         <Modal.Header>
           <Text id="modal-title" size={18}>
             <Text b size={18}>
-              Adicionar Inmueble
+              Adicionar Area
             </Text>
           </Text>
         </Modal.Header>
         <Modal.Body>
           <Input
-            name="descripcion"
+            name="nombre"
             onChange={handleChange}
             clearable
             bordered
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Descripci&oacute;n"
+            placeholder="Nombre"
           />
-          <Input
-            name="direccion"
-            onChange={handleChange}
-            clearable
-            bordered
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Direcci&oacute;n"
-          />
-          <label>Centro de costos</label>
+          <label>Responsable</label>
           <select
-            name="centrodecosto"
+            name="responsable"
             onChange={handleChange}
             className="dropdown-dark"
           >
-            <option>Seleccione un centro de costo</option>
-            {centrodecostos &&
-              centrodecostos.data.map((ccItem) => {
+            <option>Seleccione un responsable</option>
+            {responsables &&
+              responsables.map((ccItem) => {
                 return (
                   <option key={ccItem.id} value={ccItem.id}>
                     {" "}
-                    {ccItem.attributes.centrocosto}{" "}
+                    {ccItem.username}{" "}
                   </option>
                 );
               })}
@@ -116,4 +105,4 @@ const AddInmueble = ({ centrodecostos }) => {
   );
 };
 
-export default AddInmueble;
+export default AddArea;

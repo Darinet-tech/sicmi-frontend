@@ -9,6 +9,9 @@ const MenuAdmin = () => {
       case "listar_usuarios":
         router.push("../admin/usuarios");
         break;
+      case "listar_areas":
+        router.push("/especialista/areas");
+        break;
       case "listar_inmuebles":
         router.push("/especialista/inmuebles");
       default:
@@ -40,13 +43,16 @@ const MenuAdmin = () => {
                   <Dropdown.Item key="listar_usuarios" color="primary">
                     USUARIOS
                   </Dropdown.Item>
-                  <Dropdown.Item key="listar_inmuebles" color="secondary">
+                  <Dropdown.Item key="listar_areas" color="secondary">
+                    AREAS
+                  </Dropdown.Item>
+                  <Dropdown.Item key="listar_inmuebles" color="success">
                     INMUEBLES
                   </Dropdown.Item>
-                  <Dropdown.Item key="solicitudes" color="success">
+                  <Dropdown.Item key="solicitudes" color="warning">
                     SOLICITUDES
                   </Dropdown.Item>
-                  <Dropdown.Item key="ordenes" color="warning">
+                  <Dropdown.Item key="ordenes" color="default">
                     ÓRDENES DE TRABAJO
                   </Dropdown.Item>
                 </Dropdown.Menu>

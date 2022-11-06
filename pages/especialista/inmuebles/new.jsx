@@ -22,7 +22,7 @@ export default function newPage({ centrodecostos }) {
   const [inmueble, setInmueble] = useState({
     descripcion: "",
     direccion: "",
-    centrodecosto: "",
+    centrodecosto: null,
     unidadorganizativa: uo,
   });
 
@@ -98,6 +98,7 @@ export default function newPage({ centrodecostos }) {
                   className="dropdown-dark"
                   onChange={handleChange}
                 >
+                  <option>Seleccione un centro de costo</option>
                   {centrodecostos &&
                     centrodecostos.data.map((ccItem) => {
                       return (

@@ -44,12 +44,12 @@ export default function usuarios({ usuarios, roles, uos }) {
               <AddUsuario roles={roles} uos={uos} />
             </Row>
             <Row>
-              {usuarios.length === 0 ? (
-                <h2>No existen Usuarios registrados</h2>
-              ) : (
+              {usuarios && usuarios.length > 0 ? (
                 <>
                   <TableUsuarios usuarios={data} />
                 </>
+              ) : (
+                <h2>No existen Usuarios registrados</h2>
               )}
             </Row>
           </Grid>
@@ -76,7 +76,6 @@ export async function getServerSideProps({ req, params }) {
     }
   );
 
-
   const rolesResponse = await fetcher(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}/users-permissions/roles`,
     {
@@ -88,7 +87,6 @@ export async function getServerSideProps({ req, params }) {
     }
   );
 
-  
   const uoResponse = await fetcher(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}/unidadorganizativas`,
     {

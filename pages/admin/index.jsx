@@ -1,4 +1,4 @@
-
+/* eslint-disable react-hooks/rules-of-hooks */
 
 import { Layout } from "../../components";
 import LayoutAdmin from "../../components/admin/LayoutAdmin";

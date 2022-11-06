@@ -14,16 +14,16 @@ import LayoutEspecialista from "../../../components/especialista/LayoutEspeciali
 import { Button, Grid, Row, Text } from "@nextui-org/react";
 import { useReactToPrint } from "react-to-print";
 
-export default function all_inmuebles({ inmuebles }) {
+export default function all_areas({ areas }) {
   const { user, loading } = useFetchUser();
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: "Listado-Inmuebles",
+    documentTitle: "Listado-Areas",
     onAfterPrint: () => {
-      console.log("Reporte Listado de Inmuebles generado exitosamente");
+      console.log("Reporte Listado de Areas generado exitosamente");
     },
   });
 
@@ -36,7 +36,7 @@ export default function all_inmuebles({ inmuebles }) {
               <Button onClick={handlePrint}> Imprimir Reporte </Button>
             </Row>
             <Row>
-              {inmuebles.data && inmuebles.data.length > 0 ? (
+              {areas.data && areas.data.length > 0 ? (
                 <div
                   ref={componentRef}
                   style={{
@@ -47,30 +47,41 @@ export default function all_inmuebles({ inmuebles }) {
                         : "60%",
                   }}
                 >
-                  <h1>Listado de Inmuebles</h1>
+                  <h1>Listado de Areas</h1>
 
                   <table>
                     <thead>
                       <tr>
                         <th>No.</th>
-                        <th>DESCRIPCI&Oacute;N</th>
-                        <th>DIRECCI&Oacute;N</th>
-                        <th>CENTRO DE COSTO</th>
+                        <th>NOMBRE</th>
+                        <th>RESPONSABLE</th>
+                        <th>LOCALES</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {inmuebles &&
-                        inmuebles.data.map((inmuebleItem, i) => {
+                      {areas &&
+                        areas.data.map((areaItem, i) => {
                           return (
-                            <tr key={inmuebleItem.id}>
+                            <tr key={areaItem.id}>
                               <td>{i + 1}</td>
-                              <td>{inmuebleItem.attributes.descripcion}</td>
-                              <td>{inmuebleItem.attributes.direccion}</td>
+                              <td>{areaItem.attributes.nombre}</td>
                               <td>
-                                {inmuebleItem.attributes.centrodecosto.data
-                                  ? inmuebleItem.attributes.centrodecosto.data
-                                      .attributes.centrocosto
+                                {areaItem.attributes.responsable.data
+                                  ? areaItem.attributes.responsable.data
+                                      .attributes.username
                                   : ""}
+                              </td>
+                              <td>
+                                {areaItem.attributes.locales &&
+                                  areaItem.attributes.locales.data.map(
+                                    (localItem) => {
+                                      return (
+                                        <div key={localItem.id}>
+                                          {localItem.attributes.nombre}
+                                        </div>
+                                      );
+                                    }
+                                  )}
                               </td>
                             </tr>
                           );
@@ -79,7 +90,7 @@ export default function all_inmuebles({ inmuebles }) {
                   </table>
                 </div>
               ) : (
-                <h2>No existen Inmuebles registrados</h2>
+                <h2>No existen Areas registradas</h2>
               )}
             </Row>
           </Grid>
@@ -100,8 +111,8 @@ export async function getServerSideProps({ req, params }) {
       ? getUOFromLocalCookie()
       : getUOFromServerCookie(req);
 
-  const inmueblesResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?populate[0]=centrodecosto&filters[unidadorganizativa][id][$eq]=${uo}`,
+  const areasResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/areas?populate[0]=responsable&populate[1]=locales&filters[unidadorganizativa][id][$eq]=${uo}`,
     {
       method: "GET",
       headers: {
@@ -113,7 +124,7 @@ export async function getServerSideProps({ req, params }) {
 
   return {
     props: {
-      inmuebles: inmueblesResponse,
+      areas: areasResponse,
     },
   };
 }

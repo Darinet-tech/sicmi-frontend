@@ -12,6 +12,9 @@ const MenuEspecialista = () => {
       case "listar_inmuebles":
         router.push("/especialista/inmuebles");
         break;
+      case "listar_areas":
+        router.push("/especialista/areas");
+        break;
       default:
         break;
     }
@@ -43,6 +46,9 @@ const MenuEspecialista = () => {
                   </Dropdown.Item>
                   <Dropdown.Item key="listar_inmuebles" color="secondary">
                     INMUEBLES
+                  </Dropdown.Item>
+                  <Dropdown.Item key="listar_areas" color="secondary">
+                    AREAS
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

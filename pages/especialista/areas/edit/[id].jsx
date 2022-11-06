@@ -10,15 +10,16 @@ import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
   getUOFromLocalCookie,
+  getUOFromServerCookie,
 } from "../../../../lib/auth";
 import { fetcher } from "../../../../lib/api";
 
-export default function editPage({ centrodecostos }) {
+export default function editPage({ responsables }) {
   const { user, loading } = useFetchUser();
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
   const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";
   const router = useRouter();
-  const [inmueble, setInmueble] = useState({
+  const [area, setArea] = useState({
     id: "",
     descripcion: "",
     direccion: "",
@@ -27,36 +28,36 @@ export default function editPage({ centrodecostos }) {
   });
 
   const closeHandler = () => {
-    router.push("/especialista/inmuebles");
+    router.push("/especialista/areas");
   };
 
   const handleChange = (e) => {
-    setInmueble({ ...inmueble, [e.target.name]: e.target.value });
+    setArea({ ...area, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
     try {
       const responseData = await fetcher(
-        `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles/${inmueble.id}`,
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/areas/${area.id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`,
           },
-          body: JSON.stringify({ data: inmueble }),
+          body: JSON.stringify({ data: area }),
         }
       );
-      router.push("/especialista/inmuebles");
+      router.push("/especialista/areas");
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  const loadInmueble = async (pid) => {
+  const loadarea = async (pid) => {
     try {
-      const inmueble_loaded = await fetcher(
-        `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles/${pid}?populate[0]=centrodecosto`,
+      const area_loaded = await fetcher(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/areas/${pid}?populate[0]=responsable`,
         {
           method: "GET",
           headers: {
@@ -66,22 +67,21 @@ export default function editPage({ centrodecostos }) {
         }
       );
 
-      setInmueble({
-        id: inmueble_loaded.data.id,
-        descripcion: inmueble_loaded.data.attributes.descripcion,
-        direccion: inmueble_loaded.data.attributes.direccion,
-        centrodecosto: inmueble_loaded.data.attributes.centrodecosto.data
-          ? inmueble_loaded.data.attributes.centrodecosto.data.id
+      setArea({
+        id: area_loaded.data.id,
+        nombre: area_loaded.data.attributes.nombre,
+        responsable: area_loaded.data.attributes.responsable.data
+          ? area_loaded.data.attributes.responsable.data.id
           : "",
       });
     } catch (error) {
-      router.push("/especialista/inmuebles");
+      router.push("/especialista/areas");
     }
   };
 
   useEffect(() => {
     if (typeof router.query.id === "string") {
-      loadInmueble(router.query.id);
+      loadarea(router.query.id);
     }
   }, [router.query]);
 
@@ -99,45 +99,35 @@ export default function editPage({ centrodecostos }) {
               <Modal.Header>
                 <Text id="modal-title" size={18}>
                   <Text b size={18}>
-                    Editar Inmueble
+                    Editar Area
                   </Text>
                 </Text>
               </Modal.Header>
               <Modal.Body>
                 <Input
-                  name="descripcion"
+                  name="nombre"
                   onChange={handleChange}
                   clearable
                   bordered
                   fullWidth
                   color="primary"
                   size="lg"
-                  value={inmueble.descripcion}
+                  value={area.nombre}
                 />
-                <Input
-                  name="direccion"
-                  onChange={handleChange}
-                  clearable
-                  bordered
-                  fullWidth
-                  color="primary"
-                  size="lg"
-                  value={inmueble.direccion}
-                />
-                <label>Centro de costo</label>
+                <label>Responsable</label>
                 <select
-                  name="centrodecosto"
+                  name="responsable"
                   onChange={handleChange}
-                  value={inmueble.centrodecosto}
+                  value={area.responsable}
                   className="dropdown-dark"
                 >
-                  <option>Seleccione un centro de costo</option>
-                  {centrodecostos &&
-                    centrodecostos.data.map((ccItem) => {
+                  <option>Seleccione un responsable</option>
+                  {responsables &&
+                    responsables.map((ccItem) => {
                       return (
                         <option key={ccItem.id} value={ccItem.id}>
                           {" "}
-                          {ccItem.attributes.centrocosto}{" "}
+                          {ccItem.username}{" "}
                         </option>
                       );
                     })}
@@ -169,9 +159,13 @@ export async function getServerSideProps({ req, params }) {
     typeof window !== "undefined"
       ? getTokenFromLocalCookie()
       : getTokenFromServerCookie(req);
+  const uo =
+    typeof window !== "undefined"
+      ? getUOFromLocalCookie()
+      : getUOFromServerCookie(req);
 
-  const centrosResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/centrodecostos`,
+  const responsablesResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/users?filters[role][name][$eq]=Cliente&filters[unidadorganizativa][id][$eq]=${uo}`,
     {
       method: "GET",
       headers: {
@@ -183,7 +177,7 @@ export async function getServerSideProps({ req, params }) {
 
   return {
     props: {
-      centrodecostos: centrosResponse,
+      responsables: responsablesResponse,
     },
   };
 }

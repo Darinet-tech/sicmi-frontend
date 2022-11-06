@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { Modal, Button, Text, Input, Checkbox } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useFetchUser } from "../../../../lib/authContext";
-import { Authentication, Layout } from "../../../../components";
 import LayoutAdmin from "../../../../components/admin/LayoutAdmin";
 import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
 } from "../../../../lib/auth";
 import { fetcher } from "../../../../lib/api";
+import { Layout } from "../../../../components";
 
 export default function editPage({ roles, uos }) {
   const { user, loading } = useFetchUser();
@@ -20,8 +20,8 @@ export default function editPage({ roles, uos }) {
     id: "",
     username: "",
     email: "",
-    role: roles.length > 0 ? roles[0].id : "",
-    unidadorganizativa: uos.data.length > 0 ? uos.data[0].id : "",
+    role: roles.length > 0 ? roles[0].id : null,
+    unidadorganizativa: uos.data.length > 0 ? uos.data[0].id : null,
     cargo: "",
     blocked: false,
     confirmed: true,
@@ -150,6 +150,7 @@ export default function editPage({ roles, uos }) {
                 value={usuario.role}
                 className="dropdown-dark"
               >
+                <option>Seleccione un rol</option>
                 {Array.isArray(roles.roles) &&
                   roles.roles.map((ccItem) => {
                     return (
@@ -167,6 +168,7 @@ export default function editPage({ roles, uos }) {
                 value={usuario.unidadorganizativa}
                 className="dropdown-dark"
               >
+                <option>Seleccione una unidad organizativa</option>
                 {Array.isArray(uos.data) &&
                   uos.data.map((ccItem) => {
                     return (

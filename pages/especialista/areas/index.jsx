@@ -16,10 +16,10 @@ import {
 import { fetcher } from "../../../lib/api";
 import { Layout } from "../../../components";
 import LayoutEspecialista from "../../../components/especialista/LayoutEspecialista";
-import AddInmueble from "../../../components/inmueble/AddInmueble";
-import TableInmuebles from "../../../components/inmueble/TableInmuebles";
+import AddArea from "../../../components/area/AddArea";
+import TableAreas from "../../../components/area/TableAreas";
 
-export default function inmuebles({ inmuebles, centrodecostos }) {
+export default function areas({ areas, responsables }) {
   const { user, loading } = useFetchUser();
   const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
@@ -28,7 +28,7 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
 
   const { data } = useSWR(
     [
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?populate[0]=centrodecosto&filters[unidadorganizativa][id][$eq]=${uo}&pagination[page]=${pageIndex}&pagination[pageSize]=5`,
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/areas?populate[0]=responsable&populate[1]=locales&filters[unidadorganizativa][id][$eq]=${uo}&pagination[page]=${pageIndex}&pagination[pageSize]=5`,
       {
         method: "GET",
         headers: {
@@ -39,7 +39,7 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
     ],
     fetcher,
     {
-      fallbackData: inmuebles,
+      fallbackData: areas,
     }
   );
 
@@ -50,22 +50,22 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
           {uo ? (
             <Grid>
               <Row>
-                <AddInmueble centrodecostos={centrodecostos} />
+                <AddArea responsables={responsables} />
 
                 <Button
                   ghost
                   auto
-                  onClick={() => router.push("/especialista/inmuebles/all")}
+                  onClick={() => router.push("/especialista/areas/all")}
                 >
                   Mostrar todos
                 </Button>
               </Row>
               <Row>
-                {inmuebles.data && inmuebles.data.length > 0 ? (
+                {areas.data && areas.data.length > 0 ? (
                   <>
                     <Grid>
                       <Row>
-                        <TableInmuebles inmuebles={data} />
+                        <TableAreas areas={data} />
                       </Row>
                       <Row>
                         <Grid.Container gap={2}>
@@ -118,7 +118,7 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
                     </Grid>
                   </>
                 ) : (
-                  <h3>No existen Inmuebles registrados</h3>
+                  <h3>No existen Areas registradas</h3>
                 )}
               </Row>
             </Grid>
@@ -145,8 +145,8 @@ export async function getServerSideProps({ req, params }) {
       ? getUOFromLocalCookie()
       : getUOFromServerCookie(req);
 
-  const inmueblesResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?populate[0]=centrodecosto&filters[unidadorganizativa][id][$eq]=${uo}&pagination[page]=1&pagination[pageSize]=5`,
+  const areasResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/areas?populate[0]=responsable&populate[1]=locales&filters[unidadorganizativa][id][$eq]=${uo}&pagination[page]=1&pagination[pageSize]=5`,
     {
       method: "GET",
       headers: {
@@ -156,8 +156,8 @@ export async function getServerSideProps({ req, params }) {
     }
   );
 
-  const centrosResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/centrodecostos`,
+  const responsablesResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/users?filters[role][name][$eq]=Cliente&filters[unidadorganizativa][id][$eq]=${uo}`,
     {
       method: "GET",
       headers: {
@@ -169,8 +169,8 @@ export async function getServerSideProps({ req, params }) {
 
   return {
     props: {
-      inmuebles: inmueblesResponse,
-      centrodecostos: centrosResponse,
+      areas: areasResponse,
+      responsables: responsablesResponse,
     },
   };
 }
