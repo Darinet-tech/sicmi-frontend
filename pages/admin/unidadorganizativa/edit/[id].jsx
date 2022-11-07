@@ -9,28 +9,28 @@ import LayoutAdmin from "../../../../components/admin/LayoutAdmin";
 import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
-  getUOFromLocalCookie,
-  getUOFromServerCookie,
 } from "../../../../lib/auth";
 import { fetcher } from "../../../../lib/api";
 
-export default function editPage({ inmuebles }) {
+export default function editPage() {
   const { user, loading } = useFetchUser();
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
-  //const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";
   const router = useRouter();
   const [unidadorganizativa, setUnidadorganizativa] = useState({
     id: "",
     nombre: "",
-    acronimo: "",        
+    acronimo: "",
   });
 
   const closeHandler = () => {
-    router.push("/admin/unidadorganizativas");
+    router.push("/admin/unidadorganizativa");
   };
 
   const handleChange = (e) => {
-    setUnidadorganizativa({ ...unidadorganizativa, [e.target.name]: e.target.value });
+    setUnidadorganizativa({
+      ...unidadorganizativa,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async () => {
@@ -46,7 +46,7 @@ export default function editPage({ inmuebles }) {
           body: JSON.stringify({ data: unidadorganizativa }),
         }
       );
-      router.push("/admin/unidadorganizativas");
+      router.push("/admin/unidadorganizativa");
     } catch (error) {
       console.log(error.message);
     }
@@ -69,124 +69,69 @@ export default function editPage({ inmuebles }) {
         id: unidadorganizativa_loaded.data.id,
         nombre: unidadorganizativa_loaded.data.attributes.nombre,
         acronimo: unidadorganizativa_loaded.data.attributes.acronimo,
-        inmuebles: unidadorganizativa_loaded.data.attributes.inmuebles.data
-          ? unidadorganizativa_loaded.data.attributes.areas.data.id
-          : "",
       });
     } catch (error) {
-      router.push("/admin/unidadorganizativas");
+      router.push("/admin/unidadorganizativa");
     }
   };
 
   useEffect(() => {
     if (typeof router.query.id === "string") {
-      loadarea(router.query.id);
+      loadunidadorganizativa(router.query.id);
     }
   }, [router.query]);
 
   return (
     <Layout user={user} titulo="Admin" baseURL="./../../../">
-      <LayoutAdministrador>
+      <LayoutAdmin>
         <>
-          {uo ? (
-            <Modal
-              closeButton
-              aria-labelledby="modal-title"
-              open={true}
-              onClose={closeHandler}
-            >
-              <Modal.Header>
-                <Text id="modal-title" size={18}>
-                  <Text b size={18}>
-                    Editar Unidad Organizativa
-                  </Text>
+          <Modal
+            closeButton
+            aria-labelledby="modal-title"
+            open={true}
+            onClose={closeHandler}
+          >
+            <Modal.Header>
+              <Text id="modal-title" size={18}>
+                <Text b size={18}>
+                  Editar Unidad Organizativa
                 </Text>
-              </Modal.Header>
-              <Modal.Body>
-                <Input
-                  name="nombre"
-                  onChange={handleChange}
-                  clearable
-                  bordered
-                  fullWidth
-                  color="primary"
-                  size="lg"
-                  value={unidadorganizativa.nombre}
-                />
-                <Input
-                  name="acronimo"
-                  onChange={handleChange}
-                  clearable
-                  bordered
-                  fullWidth
-                  color="primary"
-                  size="lg"
-                  value={unidadorganizativa.acronimo}
-                />
-                <label>Inmuebles</label>
-                <select
-                  name="inmuebles"
-                  onChange={handleChange}
-                  value={unidadorganizativa.inmuebles}
-                  className="dropdown-dark"
-                >
-                  <option>Seleccione un inmueble</option>
-                  {inmuebles &&
-                    inmuebles.map((ccItem) => {
-                      return (
-                        <option key={ccItem.id} value={ccItem.id}>
-                          {" "}
-                          {ccItem.username}{" "}
-                        </option>
-                      );
-                    })}
-                </select>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button auto color="error" onClick={closeHandler}>
-                  Cancelar
-                </Button>
-                <Button auto onClick={handleSubmit}>
-                  Salvar
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          ) : (
-            <h3>
-              Usted no tiene asignado ninguna Unidad Organizativa, por favor
-              contacte con su Administrador
-            </h3>
-          )}
+              </Text>
+            </Modal.Header>
+            <Modal.Body>
+              <Input
+                name="nombre"
+                onChange={handleChange}
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="lg"
+                value={unidadorganizativa.nombre}
+              />
+              <Input
+                name="acronimo"
+                onChange={handleChange}
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="lg"
+                value={unidadorganizativa.acronimo}
+              />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button auto color="error" onClick={closeHandler}>
+                Cancelar
+              </Button>
+              <Button auto onClick={handleSubmit}>
+                Salvar
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </>
-      </LayoutAdministrador>
+      </LayoutAdmin>
     </Layout>
   );
 }
 
-export async function getServerSideProps({ req, params }) {
-  const jwt =
-    typeof window !== "undefined"
-      ? getTokenFromLocalCookie()
-      : getTokenFromServerCookie(req);
-  //const uo =
-  //  typeof window !== "undefined"
-  //    ? getUOFromLocalCookie()
-  //    : getUOFromServerCookie(req);
-
-  const inmueblesResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/users?filters[role][name][$eq]=Cliente&filters[unidadorganizativa][id][$eq]=${uo}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwt}`,
-      },
-    }
-  );
-
-  return {
-    props: {
-      inmuebles: inmueblesResponse,
-    },
-  };
-}

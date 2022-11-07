@@ -9,8 +9,6 @@ import { useFetchUser } from "../../../lib/authContext";
 import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
-  getUOFromLocalCookie,
-  getUOFromServerCookie,
 } from "../../../lib/auth";
 
 import { fetcher } from "../../../lib/api";
@@ -19,16 +17,15 @@ import LayoutAdmin from "../../../components/admin/LayoutAdmin";
 import AddUnidadorganizativa from "../../../components/unidadorganizativa/AddUnidadorganizativa";
 import TableUnidadorganizativa from "../../../components/unidadorganizativa/TableUnidadorganizativa";
 
-export default function unidadorganizativas({ unidadorganizativas, inmuebles }) {
+export default function unidadorganizativas({ unidadesorganizativas }) {
   const { user, loading } = useFetchUser();
   const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
-  /*const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";*/
   const router = useRouter();
 
   const { data } = useSWR(
     [
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/unidadorganizativas?populate[0]=inmueble&populate[1]=locales&filters[unidadorganizativa][id][$eq]=${uo}&pagination[page]=${pageIndex}&pagination[pageSize]=5`,
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/unidadorganizativas?populate[0]=inmuebles&pagination[page]=${pageIndex}&pagination[pageSize]=5`,
       {
         method: "GET",
         headers: {
@@ -39,7 +36,7 @@ export default function unidadorganizativas({ unidadorganizativas, inmuebles }) 
     ],
     fetcher,
     {
-      fallbackData: areas,
+      fallbackData: unidadesorganizativas,
     }
   );
 
@@ -47,87 +44,79 @@ export default function unidadorganizativas({ unidadorganizativas, inmuebles }) 
     <Layout user={user} titulo="Admin" baseURL="./../">
       <LayoutAdmin>
         <>
-          {uo ? (
-            <Grid>
-              <Row>
-                <AddUnidadorganizativa inmuebles={inmuebles} />
+          <Grid>
+            <Row>
+              <AddUnidadorganizativa />
 
-                <Button
-                  ghost
-                  auto
-                  onClick={() => router.push("/admin/unidadorganizativas/all")}
-                >
-                  Mostrar todas
-                </Button>
-              </Row>
-              <Row>
-                {unidadorganizativas.data && unidadorganizativas.data.length > 0 ? (
-                  <>
-                    <Grid>
-                      <Row>
-                        <TableUnidadorganizativa unidadorganizativas={data} />
-                      </Row>
-                      <Row>
-                        <Grid.Container gap={2}>
-                          <Grid>
-                            <Button
-                              auto
-                              rounded
-                              className={`${
-                                pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
-                              }`}
-                              disabled={pageIndex === 1}
-                              onClick={() => setPageIndex(pageIndex - 1)}
-                            >
-                              {" "}
-                              <FaArrowAltCircleLeft />
-                            </Button>
-                          </Grid>
-                          <Grid>
-                            <Button
-                              auto
-                              rounded
-                              className={`${
-                                pageIndex ===
-                                (data &&
-                                  data.meta &&
-                                  data.meta.pagination.pageCount)
-                                  ? "bg-gray-300"
-                                  : "bg-blue-400"
-                              }`}
-                              disabled={
-                                pageIndex ===
-                                (data &&
-                                  data.meta &&
-                                  data.meta.pagination.pageCount)
-                              }
-                              onClick={() => setPageIndex(pageIndex + 1)}
-                            >
-                              <FaArrowAltCircleRight />
-                            </Button>
-                          </Grid>
-                          <Grid>
-                            <span>{`${pageIndex} de ${
-                              data &&
-                              data.meta &&
-                              data.meta.pagination.pageCount
-                            }`}</span>
-                          </Grid>
-                        </Grid.Container>
-                      </Row>
-                    </Grid>
-                  </>
-                ) : (
-                  <h3>No existen Unidades Organizativas registradas</h3>
-                )}
-              </Row>
-            </Grid>
-          ) : (
-            <h3>
-              Usted no tiene asignado ninguna Unidad Organizativa, por favor
-              contacte con su Administrador
-            </h3>
-          )}
+              <Button
+                ghost
+                auto
+                onClick={() => router.push("/admin/unidadorganizativa/all")}
+              >
+                Mostrar todas
+              </Button>
+            </Row>
+            <Row>
+              {unidadesorganizativas.data &&
+              unidadesorganizativas.data.length > 0 ? (
+                <>
+                  <Grid>
+                    <Row>
+                      <TableUnidadorganizativa unidadesorganizativas={data} />
+                    </Row>
+                    <Row>
+                      <Grid.Container gap={2}>
+                        <Grid>
+                          <Button
+                            auto
+                            rounded
+                            className={`${
+                              pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
+                            }`}
+                            disabled={pageIndex === 1}
+                            onClick={() => setPageIndex(pageIndex - 1)}
+                          >
+                            {" "}
+                            <FaArrowAltCircleLeft />
+                          </Button>
+                        </Grid>
+                        <Grid>
+                          <Button
+                            auto
+                            rounded
+                            className={`${
+                              pageIndex ===
+                              (data &&
+                                data.meta &&
+                                data.meta.pagination.pageCount)
+                                ? "bg-gray-300"
+                                : "bg-blue-400"
+                            }`}
+                            disabled={
+                              pageIndex ===
+                              (data &&
+                                data.meta &&
+                                data.meta.pagination.pageCount)
+                            }
+                            onClick={() => setPageIndex(pageIndex + 1)}
+                          >
+                            <FaArrowAltCircleRight />
+                          </Button>
+                        </Grid>
+                        <Grid>
+                          <span>{`${pageIndex} de ${
+                            data && data.meta && data.meta.pagination.pageCount
+                          }`}</span>
+                        </Grid>
+                      </Grid.Container>
+                    </Row>
+                  </Grid>
+                </>
+              ) : (
+                <h3>No existen Unidades Organizativas registradas</h3>
+              )}
+            </Row>
+          </Grid>
         </>
       </LayoutAdmin>
     </Layout>
@@ -140,24 +129,8 @@ export async function getServerSideProps({ req, params }) {
       ? getTokenFromLocalCookie()
       : getTokenFromServerCookie(req);
 
-  /* const uo =
-    typeof window !== "undefined"
-      ? getUOFromLocalCookie()
-      : getUOFromServerCookie(req); */
-
-  const unidadorganizativasResponse = await fetcher(
-    /*`${process.env.NEXT_PUBLIC_STRAPI_URL}/unidadorganizativas?populate[0]=responsable&populate[1]=locales&filters[unidadorganizativa][id][$eq]=${uo}&pagination[page]=1&pagination[pageSize]=5`,*/
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwt}`,
-      },
-    }
-  );
-
-  const inmueblesResponse = await fetcher(
-    /*`${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?filters[name][$eq]=  ?????????? &filters[unidadorganizativa][id][$eq]=${uo}`,*/
+  const uoResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/unidadorganizativas?populate[0]=inmuebles&pagination[page]=1&pagination[pageSize]=5`,
     {
       method: "GET",
       headers: {
@@ -169,8 +142,7 @@ export async function getServerSideProps({ req, params }) {
 
   return {
     props: {
-      unidadorganizativas: unidadorganizativasResponse,
-      inmuebles: inmueblesResponse,
+      unidadesorganizativas: uoResponse,
     },
   };
 }

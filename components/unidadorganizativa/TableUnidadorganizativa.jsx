@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { getTokenFromLocalCookie } from "../../lib/auth";
 import { fetcher } from "../../lib/api";
 
-const TableUnidadorganizativa = ({ areas }) => {
+const TableUnidadorganizativa = ({ unidadesorganizativas }) => {
   const router = useRouter();
 
   const [visible, setVisible] = React.useState(false);
@@ -111,32 +111,25 @@ const TableUnidadorganizativa = ({ areas }) => {
               </Table.Column>
             </Table.Header>
             <Table.Body>
-              {unidadorganizativas &&
-                unidadorganizativas.data.map((unidadorganizativaItem) => {
+              {unidadesorganizativas &&
+                unidadesorganizativas.data.map((uoItem) => {
                   return (
-                    <Table.Row key={unidadorganizativaItem.id}>
+                    <Table.Row key={uoItem.id}>
                       <Table.Cell>
                         <Text b size={14}>
-                          {unidadorganizativaItem.attributes.nombre}
+                          {uoItem.attributes.nombre}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
                         <Text b size={14}>
-                          {unidadorganizativaItem.attributes.acronimo}
+                          {uoItem.attributes.acronimo}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
                         <Text b size={14}>
-                          {unidadorganizativaItem.attributes.inmuebles &&
-                            unidadorganizativaItem.attributes.inmuebles.data.map(
-                              (inmuebleItem) => {
-                                return (
-                                  <Text b size={14} key={inmuebleItem.id}>
-                                    {inmuebleItem.attributes.nombre}
-                                  </Text>
-                                );
-                              }
-                            )}
+                          {uoItem.attributes.inmuebles &&
+                            uoItem.attributes.inmuebles.data &&
+                            uoItem.attributes.inmuebles.data.length}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
@@ -153,7 +146,7 @@ const TableUnidadorganizativa = ({ areas }) => {
                               <IconButton
                                 onClick={() => {
                                   router.push(
-                                    `/admin/unidadorganizativas/edit/${unidadorganizativaItem.id}`
+                                    `/admin/unidadorganizativa/edit/${uoItem.id}`
                                   );
                                 }}
                               >
@@ -166,7 +159,7 @@ const TableUnidadorganizativa = ({ areas }) => {
                               content="Eliminar Area"
                               color="error"
                               onClick={() => {
-                                handlerDelete(unidadorganizativaItem.id);
+                                handlerDelete(uoItem.id);
                               }}
                             >
                               <IconButton>

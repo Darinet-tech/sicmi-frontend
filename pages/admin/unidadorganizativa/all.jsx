@@ -4,8 +4,6 @@ import { useFetchUser } from "../../../lib/authContext";
 import {
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
-  getUOFromLocalCookie,
-  getUOFromServerCookie,
 } from "../../../lib/auth";
 
 import { fetcher } from "../../../lib/api";
@@ -14,7 +12,7 @@ import LayoutAdmin from "../../../components/admin/LayoutAdmin";
 import { Button, Grid, Row, Text } from "@nextui-org/react";
 import { useReactToPrint } from "react-to-print";
 
-export default function all_unidadorganizativas({ unidadorganizativa }) {
+export default function all_unidadesorganizativas ({ unidadesorganizativas }) {
   const { user, loading } = useFetchUser();
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
 
@@ -23,7 +21,9 @@ export default function all_unidadorganizativas({ unidadorganizativa }) {
     content: () => componentRef.current,
     documentTitle: "Listado-Unidades-Organizativas",
     onAfterPrint: () => {
-      console.log("Reporte Listado de Unidades Organizativas generado exitosamente");
+      console.log(
+        "Reporte Listado de Unidades Organizativas generado exitosamente"
+      );
     },
   });
 
@@ -36,7 +36,8 @@ export default function all_unidadorganizativas({ unidadorganizativa }) {
               <Button onClick={handlePrint}> Imprimir Reporte </Button>
             </Row>
             <Row>
-              {unidadorganizativas.data && unidadorganizativas.data.length > 0 ? (
+              {unidadesorganizativas .data &&
+              unidadesorganizativas .data.length > 0 ? (
                 <div
                   ref={componentRef}
                   style={{
@@ -59,31 +60,18 @@ export default function all_unidadorganizativas({ unidadorganizativa }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {unidadorganizativas &&
-                        unidadorganizativas.data.map((unidadorganizativaItem, i) => {
+                      {unidadesorganizativas &&
+                        unidadesorganizativas.data.map((uoItem, i) => {
                           return (
-                            <tr key={unidadorganizativaItem.id}>
+                            <tr key={uoItem.id}>
                               <td>{i + 1}</td>
-                              <td>{unidadorganizativaItem.attributes.nombre}</td>
-                              <td>{unidadorganizativaItem.attributes.acronimo}</td>
+                              <td>{uoItem.attributes.nombre}</td>
+                              <td>{uoItem.attributes.acronimo}</td>
                               <td>
-                                {unidadorganizativaItem.attributes.inmuebles.data
-                                  ? unidadorganizativaItem.attributes.inmuebles.data
-                                      .attributes.username
+                                {uoItem.attributes.inmuebles.data
+                                  ? uoItem.attributes.inmuebles.data.length
                                   : ""}
                               </td>
-                              {/* <td>
-                                {unidadorganizativaItem.attributes.locales &&
-                                  areaItem.attributes.locales.data.map(
-                                    (localItem) => {
-                                      return (
-                                        <div key={localItem.id}>
-                                          {localItem.attributes.nombre}
-                                        </div>
-                                      );
-                                    }
-                                  )}
-                              </td> */}
                             </tr>
                           );
                         })}
@@ -107,13 +95,8 @@ export async function getServerSideProps({ req, params }) {
       ? getTokenFromLocalCookie()
       : getTokenFromServerCookie(req);
 
-  const uo =
-    typeof window !== "undefined"
-      ? getUOFromLocalCookie()
-      : getUOFromServerCookie(req);
-
-  const unidadorganizativasResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/unidadorganizativas?populate[0]=inmuebles&populate[1]=locales&filters[unidadorganizativa][id][$eq]=${uo}`,
+  const uoResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/unidadorganizativas?populate[0]=inmuebles`,
     {
       method: "GET",
       headers: {
@@ -125,7 +108,7 @@ export async function getServerSideProps({ req, params }) {
 
   return {
     props: {
-      unidadorganizativas: unidadorganizativasResponse,
+      unidadesorganizativas: uoResponse,
     },
   };
 }
