@@ -4,9 +4,8 @@ import { fetcher } from "../../lib/api";
 import { getTokenFromLocalCookie, getUOFromLocalCookie } from "../../lib/auth";
 import { useRouter } from "next/router";
 
-const AddUnidadOrganizativa = ({ inmuebles }) => {
+const AddUnidadOrganizativa = () => {
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
-  //const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";
 
   const router = useRouter();
   const [visible, setVisible] = React.useState(false);
@@ -19,7 +18,6 @@ const AddUnidadOrganizativa = ({ inmuebles }) => {
   const [uo, setUo] = React.useState({
     nombre: "",
     acronimo: "",
-    inmuebles: "",
   });
 
   const handleChange = (e) => {
@@ -48,7 +46,7 @@ const AddUnidadOrganizativa = ({ inmuebles }) => {
   return (
     <div>
       <Button ghost auto onClick={handler}>
-        Adicionar UO
+        Adicionar Unidad Organizativa
       </Button>
       <Modal
         closeButton
@@ -59,7 +57,7 @@ const AddUnidadOrganizativa = ({ inmuebles }) => {
         <Modal.Header>
           <Text id="modal-title" size={18}>
             <Text b size={18}>
-              Adicionar UO
+              Adicionar Unidad Organizativa
             </Text>
           </Text>
         </Modal.Header>
@@ -84,23 +82,7 @@ const AddUnidadOrganizativa = ({ inmuebles }) => {
             size="lg"
             placeholder="Acr&oacute;nimo"
           />
-          <label>Inmueble</label>
-          <select
-            name="inmuebles"
-            onChange={handleChange}
-            className="dropdown-dark"
-          >
-            <option>Seleccione un inmueble</option>
-            {inmuebles &&
-              inmuebles.map((ccItem) => {
-                return (
-                  <option key={ccItem.id} value={ccItem.id}>
-                    {" "}
-                    {ccItem.username}{" "}
-                  </option>
-                );
-              })}
-          </select>
+          
         </Modal.Body>
         <Modal.Footer>
           <Button auto onClick={closeHandler} color="error">
