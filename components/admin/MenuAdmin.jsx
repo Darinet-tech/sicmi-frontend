@@ -18,6 +18,9 @@ const MenuAdmin = () => {
       case "listar_inmuebles":
         router.push("/especialista/inmuebles");
         break;
+      case "listar_locales":
+        router.push("/especialista/locales");
+        break;
       default:
         break;
     }
@@ -52,14 +55,17 @@ const MenuAdmin = () => {
                   <Dropdown.Item key="listar_usuarios" color="primary">
                     USUARIOS
                   </Dropdown.Item>
-                  <Dropdown.Item key="listar_areas" color="secondary">
-                    AREAS
-                  </Dropdown.Item>
                   <Dropdown.Item key="listar_uos" color="success">
                     UNIDAD ORGANIZATIVA
                   </Dropdown.Item>
+                  <Dropdown.Item key="listar_areas" color="secondary">
+                    AREAS
+                  </Dropdown.Item>
                   <Dropdown.Item key="listar_inmuebles" color="warning">
                     INMUEBLES
+                  </Dropdown.Item>
+                  <Dropdown.Item key="listar_locales" color="secondary">
+                    LOCALES
                   </Dropdown.Item>
                   <Dropdown.Item key="solicitudes" color="error">
                     SOLICITUDES
