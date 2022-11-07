@@ -13,7 +13,7 @@ import {
 } from "../../../../lib/auth";
 import { fetcher } from "../../../../lib/api";
 
-export default function editPage({ centrodecostos }) {
+export default function editPage() {
   const { user, loading } = useFetchUser();
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
   const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";
@@ -22,7 +22,6 @@ export default function editPage({ centrodecostos }) {
     id: "",
     descripcion: "",
     direccion: "",
-    centrodecosto: null,
     unidadorganizativa: uo,
   });
 
@@ -70,9 +69,6 @@ export default function editPage({ centrodecostos }) {
         id: inmueble_loaded.data.id,
         descripcion: inmueble_loaded.data.attributes.descripcion,
         direccion: inmueble_loaded.data.attributes.direccion,
-        centrodecosto: inmueble_loaded.data.attributes.centrodecosto.data
-          ? inmueble_loaded.data.attributes.centrodecosto.data.id
-          : "",
       });
     } catch (error) {
       router.push("/especialista/inmuebles");
@@ -124,24 +120,6 @@ export default function editPage({ centrodecostos }) {
                   size="lg"
                   value={inmueble.direccion}
                 />
-                <label>Centro de costo</label>
-                <select
-                  name="centrodecosto"
-                  onChange={handleChange}
-                  value={inmueble.centrodecosto}
-                  className="dropdown-dark"
-                >
-                  <option>Seleccione un centro de costo</option>
-                  {centrodecostos &&
-                    centrodecostos.data.map((ccItem) => {
-                      return (
-                        <option key={ccItem.id} value={ccItem.id}>
-                          {" "}
-                          {ccItem.attributes.centrocosto}{" "}
-                        </option>
-                      );
-                    })}
-                </select>
               </Modal.Body>
               <Modal.Footer>
                 <Button auto color="error" onClick={closeHandler}>
@@ -162,28 +140,4 @@ export default function editPage({ centrodecostos }) {
       </LayoutEspecialista>
     </Layout>
   );
-}
-
-export async function getServerSideProps({ req, params }) {
-  const jwt =
-    typeof window !== "undefined"
-      ? getTokenFromLocalCookie()
-      : getTokenFromServerCookie(req);
-
-  const centrosResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/centrodecostos`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwt}`,
-      },
-    }
-  );
-
-  return {
-    props: {
-      centrodecostos: centrosResponse,
-    },
-  };
 }

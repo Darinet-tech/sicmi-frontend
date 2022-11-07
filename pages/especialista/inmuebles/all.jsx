@@ -55,7 +55,6 @@ export default function all_inmuebles({ inmuebles }) {
                         <th>No.</th>
                         <th>DESCRIPCI&Oacute;N</th>
                         <th>DIRECCI&Oacute;N</th>
-                        <th>CENTRO DE COSTO</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -66,12 +65,6 @@ export default function all_inmuebles({ inmuebles }) {
                               <td>{i + 1}</td>
                               <td>{inmuebleItem.attributes.descripcion}</td>
                               <td>{inmuebleItem.attributes.direccion}</td>
-                              <td>
-                                {inmuebleItem.attributes.centrodecosto.data
-                                  ? inmuebleItem.attributes.centrodecosto.data
-                                      .attributes.centrocosto
-                                  : ""}
-                              </td>
                             </tr>
                           );
                         })}

@@ -106,6 +106,7 @@ const TableAreas = ({ areas }) => {
               <Table.Column>NOMBRE</Table.Column>
               <Table.Column>RESPONSABLE</Table.Column>
               <Table.Column>LOCALES</Table.Column>
+              <Table.Column>CENTRO DE COSTO</Table.Column>
               <Table.Column hideHeader={true} align="center">
                 ACCIONES
               </Table.Column>
@@ -140,6 +141,11 @@ const TableAreas = ({ areas }) => {
                                 );
                               }
                             )}
+                        </Text>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Text b size={14}>
+                          {areaItem.attributes.centrodecosto}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>

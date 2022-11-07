@@ -19,7 +19,6 @@ const AddInmueble = ({ centrodecostos }) => {
   const [inmueble, setInmueble] = React.useState({
     descripcion: "",
     direccion: "",
-    centrodecosto: null,
     unidadorganizativa: uo,
   });
 
@@ -85,23 +84,6 @@ const AddInmueble = ({ centrodecostos }) => {
             size="lg"
             placeholder="Direcci&oacute;n"
           />
-          <label>Centro de costos</label>
-          <select
-            name="centrodecosto"
-            onChange={handleChange}
-            className="dropdown-dark"
-          >
-            <option>Seleccione un centro de costo</option>
-            {centrodecostos &&
-              centrodecostos.data.map((ccItem) => {
-                return (
-                  <option key={ccItem.id} value={ccItem.id}>
-                    {" "}
-                    {ccItem.attributes.centrocosto}{" "}
-                  </option>
-                );
-              })}
-          </select>
         </Modal.Body>
         <Modal.Footer>
           <Button auto onClick={closeHandler} color="error">

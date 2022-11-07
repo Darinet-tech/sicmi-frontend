@@ -20,6 +20,7 @@ const AddArea = ({ responsables }) => {
     nombre: "",
     responsable: null,
     unidadorganizativa: uo,
+    centrodecosto: "",
   });
 
   const handleChange = (e) => {
@@ -91,6 +92,16 @@ const AddArea = ({ responsables }) => {
                 );
               })}
           </select>
+          <Input
+            name="centrodecosto"
+            onChange={handleChange}
+            clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
+            placeholder="Centro de costo"
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button auto onClick={closeHandler} color="error">

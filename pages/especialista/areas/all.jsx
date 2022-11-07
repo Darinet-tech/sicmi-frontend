@@ -56,6 +56,7 @@ export default function all_areas({ areas }) {
                         <th>NOMBRE</th>
                         <th>RESPONSABLE</th>
                         <th>LOCALES</th>
+                        <th>CENTRO DE COSTO</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -83,6 +84,7 @@ export default function all_areas({ areas }) {
                                     }
                                   )}
                               </td>
+                              <td>{areaItem.attributes.centrodecosto}</td>
                             </tr>
                           );
                         })}

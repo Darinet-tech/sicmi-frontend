@@ -105,7 +105,6 @@ const TableInmuebles = ({ inmuebles }) => {
             <Table.Header>
               <Table.Column>DESCRIPCION</Table.Column>
               <Table.Column>DIRECCION</Table.Column>
-              <Table.Column>CENTRO DE COSTO</Table.Column>
               <Table.Column hideHeader={true} align="center">
                 ACCIONES
               </Table.Column>
@@ -116,23 +115,16 @@ const TableInmuebles = ({ inmuebles }) => {
                   return (
                     <Table.Row key={inmuebleItem.id}>
                       <Table.Cell>
-                        <Text b size={14} >
+                        <Text b size={14}>
                           {inmuebleItem.attributes.descripcion}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} >
+                        <Text b size={14}>
                           {inmuebleItem.attributes.direccion}
                         </Text>
                       </Table.Cell>
-                      <Table.Cell>
-                        <Text b size={14} >
-                          {inmuebleItem.attributes.centrodecosto.data
-                            ? inmuebleItem.attributes.centrodecosto.data
-                                .attributes.centrocosto
-                            : ""}
-                        </Text>
-                      </Table.Cell>
+
                       <Table.Cell>
                         <Row justify="center" align="center">
                           <Col css={{ d: "flex" }}>

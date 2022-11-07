@@ -19,7 +19,7 @@ import LayoutEspecialista from "../../../components/especialista/LayoutEspeciali
 import AddInmueble from "../../../components/inmueble/AddInmueble";
 import TableInmuebles from "../../../components/inmueble/TableInmuebles";
 
-export default function inmuebles({ inmuebles, centrodecostos }) {
+export default function inmuebles({ inmuebles }) {
   const { user, loading } = useFetchUser();
   const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
@@ -50,7 +50,7 @@ export default function inmuebles({ inmuebles, centrodecostos }) {
           {uo ? (
             <Grid>
               <Row>
-                <AddInmueble centrodecostos={centrodecostos} />
+                <AddInmueble />
 
                 <Button
                   ghost
@@ -156,21 +156,9 @@ export async function getServerSideProps({ req, params }) {
     }
   );
 
-  const centrosResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/centrodecostos`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwt}`,
-      },
-    }
-  );
-
   return {
     props: {
       inmuebles: inmueblesResponse,
-      centrodecostos: centrosResponse,
     },
   };
 }

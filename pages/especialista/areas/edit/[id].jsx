@@ -21,9 +21,9 @@ export default function editPage({ responsables }) {
   const router = useRouter();
   const [area, setArea] = useState({
     id: "",
-    descripcion: "",
-    direccion: "",
-    centrodecosto: null,
+    nombre: "",
+    responsable: null,
+    centrodecosto: "",
     unidadorganizativa: uo,
   });
 
@@ -70,6 +70,7 @@ export default function editPage({ responsables }) {
       setArea({
         id: area_loaded.data.id,
         nombre: area_loaded.data.attributes.nombre,
+        centrodecosto: area_loaded.data.attributes.centrodecosto,
         responsable: area_loaded.data.attributes.responsable.data
           ? area_loaded.data.attributes.responsable.data.id
           : "",
@@ -132,6 +133,16 @@ export default function editPage({ responsables }) {
                       );
                     })}
                 </select>
+                <Input
+                  name="centrodecosto"
+                  onChange={handleChange}
+                  clearable
+                  bordered
+                  fullWidth
+                  color="primary"
+                  size="lg"
+                  value={area.centrodecosto}
+                />
               </Modal.Body>
               <Modal.Footer>
                 <Button auto color="error" onClick={closeHandler}>
