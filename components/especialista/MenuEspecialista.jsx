@@ -35,7 +35,7 @@ const MenuEspecialista = () => {
           <Grid.Container gap={1} justify="flex-start">
             <Grid xl={12}>
               <Dropdown>
-                <Dropdown.Button light bordered color="gradient">
+                <Dropdown.Button style={{ width:"100%" }} light bordered color="gradient">
                   MENU
                 </Dropdown.Button>
                 <Dropdown.Menu
@@ -50,8 +50,8 @@ const MenuEspecialista = () => {
                   <Dropdown.Item key="listar_inmuebles" color="secondary">
                     INMUEBLES
                   </Dropdown.Item>
-                  <Dropdown.Item key="listar_areas" color="secondary">
-                    AREAS
+                  <Dropdown.Item key="listar_areas" color="success">
+                    ÁREAS
                   </Dropdown.Item>
                   <Dropdown.Item key="listar_locales" color="secondary">
                     LOCALES
