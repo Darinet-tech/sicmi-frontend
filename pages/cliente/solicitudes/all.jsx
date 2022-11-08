@@ -2,6 +2,8 @@
 import { useRef } from "react";
 import { useFetchUser } from "../../../lib/authContext";
 import {
+  getIdFromLocalCookie,
+  getIdFromServerCookie,
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
   getUOFromLocalCookie,
@@ -14,10 +16,8 @@ import LayoutCliente from "../../../components/cliente/LayoutCliente";
 import { Button, Grid, Row, Text } from "@nextui-org/react";
 import { useReactToPrint } from "react-to-print";
 
-export default function all_inmuebles({ inmuebles }) {
+export default function all_solicitudes({ solicitudes }) {
   const { user, loading } = useFetchUser();
-  const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
-
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -53,9 +53,11 @@ export default function all_inmuebles({ inmuebles }) {
                     <thead>
                       <tr>
                         <th>No.</th>
-                        <th>DESCRIPCI&Oacute;N</th>
+                        <th>LOCAL</th>
+                        <th>DESCRIPCION</th>
                         <th>FECHA INICIO</th>
                         <th>FECHA FIN</th>
+                        <th>ELABORADA POR</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -64,9 +66,23 @@ export default function all_inmuebles({ inmuebles }) {
                           return (
                             <tr key={solicitudItem.id}>
                               <td>{i + 1}</td>
+                              <td>
+                                {solicitudItem.attributes.local &&
+                                solicitudItem.attributes.local.data
+                                  ? solicitudItem.attributes.local.data
+                                      .attributes.nombre
+                                  : ""}
+                              </td>
                               <td>{solicitudItem.attributes.descripcion}</td>
                               <td>{solicitudItem.attributes.fecha_ini}</td>
                               <td>{solicitudItem.attributes.fecha_fin}</td>
+                              <td>
+                                {solicitudItem.attributes.elaboradopor &&
+                                solicitudItem.attributes.elaboradopor.data
+                                  ? solicitudItem.attributes.elaboradopor.data
+                                      .attributes.username
+                                  : ""}
+                              </td>
                             </tr>
                           );
                         })}
@@ -74,7 +90,7 @@ export default function all_inmuebles({ inmuebles }) {
                   </table>
                 </div>
               ) : (
-                <h2>No existen Solicitudes registrados</h2>
+                <h2>No existen Solicitudes registradas</h2>
               )}
             </Row>
           </Grid>
@@ -84,3 +100,31 @@ export default function all_inmuebles({ inmuebles }) {
   );
 }
 
+export async function getServerSideProps({ req, params }) {
+  const jwt =
+    typeof window !== "undefined"
+      ? getTokenFromLocalCookie()
+      : getTokenFromServerCookie(req);
+
+  const iduser =
+    typeof window !== "undefined"
+      ? getIdFromLocalCookie()
+      : getIdFromServerCookie(req);
+
+  const solicitudesResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes?populate[0]=local&populate[1]=elaboradopor&filters[local][arearesponsable][responsable][id][$eq]=${iduser}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
+
+  return {
+    props: {
+      solicitudes: solicitudesResponse,
+    },
+  };
+}

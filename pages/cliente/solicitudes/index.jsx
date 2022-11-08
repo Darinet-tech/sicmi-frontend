@@ -7,10 +7,10 @@ import useSWR from "swr";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import { useFetchUser } from "../../../lib/authContext";
 import {
+  getIdFromLocalCookie,
+  getIdFromServerCookie,
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
-  getUOFromLocalCookie,
-  getUOFromServerCookie,
 } from "../../../lib/auth";
 
 import { fetcher } from "../../../lib/api";
@@ -19,16 +19,16 @@ import LayoutCliente from "../../../components/cliente/LayoutCliente";
 import AddSolicitud from "../../../components/solicitud/AddSolicitud";
 import TableSolicitudes from "../../../components/solicitud/TableSolicitudes";
 
-export default function solicitudes({ solicitudes }) {
+export default function solicitudes({ solicitudes, locales }) {
   const { user, loading } = useFetchUser();
   const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
- 
+  const iduser = typeof window !== "undefined" ? getIdFromLocalCookie() : "";
   const router = useRouter();
 
   const { data } = useSWR(
     [
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes?populate[0]=elaboradopor&pagination[page]=${pageIndex}&pagination[pageSize]=5`,
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes?populate[0]=local&populate[1]=elaboradopor&filters[local][arearesponsable][responsable][id][$eq]=${iduser}&pagination[page]=${pageIndex}&pagination[pageSize]=5`,
       {
         method: "GET",
         headers: {
@@ -49,7 +49,7 @@ export default function solicitudes({ solicitudes }) {
         <>
         <Grid>
               <Row>
-                <AddSolicitud />
+                <AddSolicitud locales={locales} />
 
                 <Button
                   ghost
@@ -64,7 +64,7 @@ export default function solicitudes({ solicitudes }) {
                   <>
                     <Grid>
                       <Row>
-                        <TableInmuebles solicitudes={data} />
+                        <TableSolicitudes user={user} solicitudes={data} />
                       </Row>
                       <Row>
                         <Grid.Container gap={2}>
@@ -133,13 +133,24 @@ export async function getServerSideProps({ req, params }) {
       ? getTokenFromLocalCookie()
       : getTokenFromServerCookie(req);
 
-  const uo =
-    typeof window !== "undefined"
-      ? getUOFromLocalCookie()
-      : getUOFromServerCookie(req);
+      const iduser =
+      typeof window !== "undefined"
+        ? getIdFromLocalCookie()
+        : getIdFromServerCookie(req);
 
-  const inmueblesResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?populate[0]=centrodecosto&filters[unidadorganizativa][id][$eq]=${uo}&pagination[page]=1&pagination[pageSize]=5`,
+  const solicitudesResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes?populate[0]=local&populate[1]=elaboradopor&filters[local][arearesponsable][responsable][id][$eq]=${iduser}&pagination[page]=1&pagination[pageSize]=5`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
+
+  const localesResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/locals?&filters[arearesponsable][responsable][id][$eq]=${iduser}`,
     {
       method: "GET",
       headers: {
@@ -151,7 +162,8 @@ export async function getServerSideProps({ req, params }) {
 
   return {
     props: {
-      inmuebles: inmueblesResponse,
+      solicitudes: solicitudesResponse,
+      locales: localesResponse
     },
   };
 }

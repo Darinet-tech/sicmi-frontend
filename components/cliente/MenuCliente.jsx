@@ -6,11 +6,8 @@ const MenuCliente = () => {
   const router = useRouter();
   const goto = (key) => {
     switch (key) {
-      case "crear_solicitud":
-        router.push("../cliente/solicitudes/new");
-        break;
       case "listar_solicitudes":
-        router.push("../cliente/solicitudes");
+        router.push("/cliente/solicitudes");
         break;
 
       default:
@@ -44,11 +41,8 @@ const MenuCliente = () => {
                   css={{ textAlign: "center", height: "max-content" }}
                   onAction={goto}
                 >
-                  <Dropdown.Item key="crear_solicitud" color="success">
-                    CREAR SOLICITUD
-                  </Dropdown.Item>
                   <Dropdown.Item key="listar_solicitudes" color="warning">
-                    LISTAR MIS SOLICITUDES
+                    SOLICITUDES
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

@@ -1,31 +1,26 @@
 import React from "react";
 import { Modal, Button, Text, Input, Textarea } from "@nextui-org/react";
 import { fetcher } from "../../lib/api";
-import { getTokenFromLocalCookie, getUOFromLocalCookie } from "../../lib/auth";
+import { getIdFromLocalCookie, getTokenFromLocalCookie } from "../../lib/auth";
 import { useRouter } from "next/router";
 
-const AddSolicitud = ({ unidadorganizativas, areas, inmuebles, locales }) => {
+const AddSolicitud = ({ locales }) => {
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
-  const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";
-
+  const iduser = typeof window !== "undefined" ? getIdFromLocalCookie() : null;
   const router = useRouter();
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
+  
 
   const closeHandler = () => {
     setVisible(false);
   };
 
   const [solicitud, setSolicitud] = React.useState({
-    unidadorganizativa: uo,
-    inmueble: null,
-    area: null,
-    centrodecosto: "",
-    local: null,
     descripcion: "",
-    responsable: "",
-    cargo: "",
-    fecha: "",
+    local: null,
+    fecha_ini: new Date(),    
+    elaboradopor: iduser
   });
 
   const handleChange = (e) => {
@@ -70,38 +65,7 @@ const AddSolicitud = ({ unidadorganizativas, areas, inmuebles, locales }) => {
           </Text>
         </Modal.Header>
         <Modal.Body>
-          <label>Inmueble</label>
-          <select
-            name="inmueble"
-            onChange={handleChange}
-            className="dropdown-dark"
-          >
-            <option>Seleccione un inmueble</option>
-            {inmuebles &&
-              inmuebles.data &&
-              inmuebles.data.map((ccItem) => {
-                return (
-                  <option key={ccItem.id} value={ccItem.id}>
-                    {" "}
-                    {ccItem.attributes.descripcion}{" "}
-                  </option>
-                );
-              })}
-          </select>
-          <label>Área solicitante</label>
-          <select name="area" onChange={handleChange} className="dropdown-dark">
-            <option>Seleccione un área</option>
-            {areas &&
-              areas.data &&
-              areas.data.map((ccItem) => {
-                return (
-                  <option key={ccItem.id} value={ccItem.id}>
-                    {" "}
-                    {ccItem.attributes.nombre}{" "}
-                  </option>
-                );
-              })}
-          </select>
+          
           <label>Local</label>
           <select
             name="local"
@@ -123,16 +87,6 @@ const AddSolicitud = ({ unidadorganizativas, areas, inmuebles, locales }) => {
           <Textarea
             label="Afectaci&oacute;n"
             name="descripcion"
-            //onChange={handleChange}
-            clearable
-            bordered
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Descripci&oacute;n de las afectaciones"
-          />
-          {/* <Input
-            name="descripcion"
             onChange={handleChange}
             clearable
             bordered
@@ -140,7 +94,8 @@ const AddSolicitud = ({ unidadorganizativas, areas, inmuebles, locales }) => {
             color="primary"
             size="lg"
             placeholder="Descripci&oacute;n de las afectaciones"
-          /> */}
+          />
+          
         </Modal.Body>
         <Modal.Footer>
           <Button auto onClick={closeHandler} color="error">
