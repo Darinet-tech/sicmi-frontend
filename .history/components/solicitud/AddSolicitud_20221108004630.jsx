@@ -1,0 +1,154 @@
+import React from "react";
+import { Modal, Button, Text, Input } from "@nextui-org/react";
+import { fetcher } from "../../lib/api";
+import { getTokenFromLocalCookie, getUOFromLocalCookie } from "../../lib/auth";
+import { useRouter } from "next/router";
+
+const AddSolicitud = ({ unidadorganizativas, areas, inmuebles, locales
+ }) => {
+  const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
+  const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";
+
+  const router = useRouter();
+  const [visible, setVisible] = React.useState(false);
+  const handler = () => setVisible(true);
+
+  const closeHandler = () => {
+    setVisible(false);
+  };
+
+  const [solicitud, setSolicitud] = React.useState({
+    unidadorganizativa: uo,
+    inmueble: null,
+    area: null,
+    centrodecosto: "",
+    local: null,
+    descripcion: "",
+    responsable: "",
+    cargo: "",
+    fecha: ""
+  });
+
+  const handleChange = (e) => {
+    setSolicitud({ ...solicitud, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const responseData = await fetcher(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+          body: JSON.stringify({ data: solicitud }),
+        }
+      );
+      router.reload();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  return (
+    <div>
+      <Button ghost auto onClick={handler}>
+        Registrar Solicitud
+      </Button>
+      <Modal
+        closeButton
+        aria-labelledby="modal-title"
+        open={visible}
+        onClose={closeHandler}
+      >
+        <Modal.Header>
+          <Text id="modal-title" size={18}>
+            <Text b size={18}>
+              Registrar Solicitud
+            </Text>
+          </Text>
+        </Modal.Header>
+        <Modal.Body>
+          
+          <label>Inmueble</label>
+          <select
+            name="inmueble"
+            onChange={handleChange}
+            className="dropdown-dark"
+          >
+            <option>Seleccione un inmueble</option>
+            {inmuebles &&
+              inmuebles.data &&
+              inmuebles.data.map((ccItem) => {
+                return (
+                  <option key={ccItem.id} value={ccItem.id}>
+                    {" "}
+                    {ccItem.attributes.descripcion}{" "}
+                  </option>
+                );
+              })}
+          </select>
+          <label>Área solicitante</label>
+          <select
+            name="area"
+            onChange={handleChange}
+            className="dropdown-dark"
+          >
+            <option>Seleccione un área</option>
+            {areas &&
+              areas.data &&
+              areas.data.map((ccItem) => {
+                return (
+                  <option key={ccItem.id} value={ccItem.id}>
+                    {" "}
+                    {ccItem.attributes.nombre}{" "}
+                  </option>
+                );
+              })}
+          </select>
+          <label>Local</label>
+          <select
+            name="local"
+            onChange={handleChange}
+            className="dropdown-dark"
+          >
+            <option>Seleccione un local</option>
+            {locales &&
+              locales.data &&
+              locales.data.map((ccItem) => {
+                return (
+                  <option key={ccItem.id} value={ccItem.id}>
+                    {" "}
+                    {ccItem.attributes.nombre}{" "}
+                  </option>
+                );
+              })}
+          </select>
+          <T
+          <Input
+            name="descripcion"
+            onChange={handleChange}
+            clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
+            placeholder="Descripci&oacute;n de las afectaciones"
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button auto onClick={closeHandler} color="error">
+            Cancelar
+          </Button>
+          <Button auto onClick={handleSubmit} color="success">
+            Adicionar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+};
+
+export default AddSolicitud;
