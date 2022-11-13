@@ -203,7 +203,9 @@ export default function showPage({ recursosnorelacionados }) {
                   auto
                   disabled={!enableSolicitudMateriales}
                   onClick={() => {
-                    router.push("/especialista/solicitudes/modelo");
+                    router.push(
+                      `/especialista/solicitudes/modelo/${solicitud.id}`
+                    );
                   }}
                 >
                   Mostrar Vista Previa de Solicitud de Materiales
