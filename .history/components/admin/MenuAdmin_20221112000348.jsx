@@ -1,0 +1,86 @@
+import React from "react";
+import { Card, Grid, Dropdown } from "@nextui-org/react";
+import { useRouter } from "next/router";
+
+const MenuAdmin = () => {
+  const router = useRouter();
+  const goto = (key) => {
+    switch (key) {
+      case "listar_usuarios":
+        router.push("../admin/usuarios");
+        break;
+      case "listar_areas":
+        router.push("/especialista/areas");
+        break;
+      case "listar_uos":
+        router.push("/admin/unidadorganizativa");
+        break;
+      case "listar_inmuebles":
+        router.push("/especialista/inmuebles");
+        break;
+      case "listar_locales":
+        router.push("/especialista/locales");
+        break;
+      default:
+        break;
+    }
+  };
+
+  return (
+    <Grid xl={12} css={{}}>
+      <Card color="primary"
+        css={{
+          marginTop: "1px",
+          height: "max-content",
+        }}
+      >
+        <Card.Body css={{ textAlign: "center" }}>
+          <Grid.Container gap={1} justify="flex-start">
+            <Grid xl={12}>
+              <Dropdown>
+                <Dropdown.Button
+                  style={{ width: "100%" }}
+                  light
+                  bordered
+                  color="gradient"
+                >
+                  MENU
+                </Dropdown.Button>
+                <Dropdown.Menu
+                  variant="shadow"
+                  aria-label="Actions"
+                  css={{ textAlign: "center", height: "max-content" }}
+                  onAction={goto}
+                >
+                  <Dropdown.Item key="listar_usuarios" color="default">
+                    USUARIOS
+                  </Dropdown.Item>
+                  <Dropdown.Item key="listar_uos" color="default">
+                    UNIDAD ORGANIZATIVA
+                  </Dropdown.Item>
+                  <Dropdown.Item key="listar_areas" color="default">
+                    AREAS
+                  </Dropdown.Item>
+                  <Dropdown.Item key="listar_inmuebles" color="default">
+                    INMUEBLES
+                  </Dropdown.Item>
+                  <Dropdown.Item key="listar_locales" color="default">
+                    LOCALES
+                  </Dropdown.Item>
+                  <Dropdown.Item key="solicitudes" color="default">
+                    SOLICITUDES
+                  </Dropdown.Item>
+                  <Dropdown.Item key="ordenes" color="default">
+                    ÓRDENES DE TRABAJO
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Grid>
+          </Grid.Container>
+        </Card.Body>
+      </Card>
+    </Grid>
+  );
+};
+
+export default MenuAdmin;

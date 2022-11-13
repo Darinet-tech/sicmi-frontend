@@ -1,0 +1,51 @@
+import React from "react";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import { Modal, Button, Grid, Table } from "@nextui-org/react";
+
+
+export default function ModeloSolicitud() {
+  const [visible, setVisible] = React.useState(false);
+  const handler = () => setVisible(true);
+
+  const closeHandler = () => {
+    setVisible(false);
+    console.log("closed");
+  };
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: "Listado-Solicitudes",
+    onAfterPrint: () => {
+      console.log("Reporte Listado de Solicitudes generado exitosamente");
+    },
+  });
+  return (
+    <div>
+      <Button auto shadow onClick={handler}>
+        Mostrar Modelo
+      </Button>
+      <Modal
+        width="800px"
+        ref={componentRef}
+        closeButton
+        aria-labelledby="modal-title"
+        open={visible}
+        onClose={closeHandler}
+      >
+        <Modal.Body css={{paddingBottom:'80px'}}>
+          <div ref={componentRef} style={{margin:'10px'}}>
+            <Table>
+              <Table.Header></Table.Header>
+              <Table
+            </Table>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button css={{position:'absolute',right:'10px',bottom:'10px'}} auto onClick={handlePrint}>Imprimir</Button>
+        </Modal.Footer>
+
+      </Modal>
+    </div>
+  );
+}
