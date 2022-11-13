@@ -202,7 +202,9 @@ export default function showPage({ recursosnorelacionados }) {
                   ghost
                   auto
                   disabled={!enableSolicitudMateriales}
-                  onClick={() => {}}
+                  onClick={() => {
+                    router.push("/especialista/solicitudes/modelo");
+                  }}
                 >
                   Mostrar Vista Previa de Solicitud de Materiales
                 </Button>
