@@ -85,7 +85,7 @@ const TableUsuarios = ({ usuarios }) => {
         <Row>
           <Text
             h1
-            size={60}
+            size={50}
             css={{
               textGradient: "45deg, $yellow600 -20%, $red600 100%",
             }}

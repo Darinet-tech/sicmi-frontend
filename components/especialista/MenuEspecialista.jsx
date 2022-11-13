@@ -9,6 +9,9 @@ const MenuEspecialista = () => {
       case "listar_solicitud":
         router.push("/especialista/solicitudes");
         break;
+        case "listar_recursos":
+        router.push("../especialista/recursos");
+        break;
       case "listar_inmuebles":
         router.push("/especialista/inmuebles");
         break;
@@ -49,16 +52,19 @@ const MenuEspecialista = () => {
                   css={{ textAlign: "center", height: "max-content" }}
                   onAction={goto}
                 >
-                  <Dropdown.Item key="listar_solicitud" color="primary">
+                  <Dropdown.Item key="listar_solicitud" color="default">
                     SOLICITUDES
                   </Dropdown.Item>
-                  <Dropdown.Item key="listar_inmuebles" color="secondary">
+                  <Dropdown.Item key="listar_recursos" color="default">
+                    RECURSOS
+                  </Dropdown.Item>
+                  <Dropdown.Item key="listar_inmuebles" color="default">
                     INMUEBLES
                   </Dropdown.Item>
-                  <Dropdown.Item key="listar_areas" color="success">
+                  <Dropdown.Item key="listar_areas" color="default">
                     ÁREAS
                   </Dropdown.Item>
-                  <Dropdown.Item key="listar_locales" color="warning">
+                  <Dropdown.Item key="listar_locales" color="default">
                     LOCALES
                   </Dropdown.Item>
                 </Dropdown.Menu>
