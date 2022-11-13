@@ -1,24 +1,33 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useFetchUser } from "../../../lib/authContext";
-import { Table, Button, Card, Row, Spacer, Text } from "@nextui-org/react";
 import { useState } from "react";
+import { Button, Grid, Row } from "@nextui-org/react";
+import { useRouter } from "next/router";
 import useSWR from "swr";
+
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
+import { useFetchUser } from "../../../lib/authContext";
 import {
+  getUOFromLocalCookie,
+  getUOFromServerCookie,
   getTokenFromLocalCookie,
   getTokenFromServerCookie,
 } from "../../../lib/auth";
+
 import { fetcher } from "../../../lib/api";
-import { Authentication, Layout } from "../../../components";
+import { Layout } from "../../../components";
+import TableSolicitudes from "../../../components/solicitud/TableSolicitudesEspecialista";
 import LayoutEspecialista from "../../../components/especialista/LayoutEspecialista";
 
-export default function solicitudes({ inmuebles }) {
+export default function solicitudes({ solicitudes }) {
   const { user, loading } = useFetchUser();
   const [pageIndex, setPageIndex] = useState(1);
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";
+  const uo = typeof window !== "undefined" ? getUOFromLocalCookie() : "";
+  const router = useRouter();
 
   const { data } = useSWR(
     [
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?pagination[page]=${pageIndex}&pagination[pageSize]=5`,
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes?populate[0]=local&populate[1]=elaboradopor&populate[2]=demanda_recursos&populate[3]=ordenes_de_trabajos&filters[local][inmueble][unidadorganizativa][id][$eq]=${uo}&pagination[page]=${pageIndex}&pagination[pageSize]=5`,
       {
         method: "GET",
         headers: {
@@ -29,66 +38,76 @@ export default function solicitudes({ inmuebles }) {
     ],
     fetcher,
     {
-      fallbackData: inmuebles,
+      fallbackData: solicitudes,
     }
   );
+
   return (
-    <Layout user={user} titulo="Especialista" baseURL="./../">
+    <Layout user={user} titulo="Cliente" baseURL="./../">
       <LayoutEspecialista>
-        {!loading &&
-          (user ? (
-            <Card css={{ marginTop: "10px" }}>
-              <Card.Header style={{ background: "navy" }}>
-                <Text h3 style={{ margin: "auto" }}>
-                  SOLICITUDES
-                </Text>
-              </Card.Header>
-
-              <Table
-                aria-label="Listado de Inmuebles"
-                css={{
-                  height: "auto",
-                  minWidth: "100%",
-                }}
-                selectionMode="single"
-              >
-                <Table.Header>
-                  <Table.Column>DESCRIPCION</Table.Column>
-                  <Table.Column>DIRECCION</Table.Column>
-                  <Table.Column>CENTRO DE COSTO</Table.Column>
-                </Table.Header>
-                <Table.Body>
-                  {inmuebles &&
-                    inmuebles.data.map((inmuebleItem) => {
-                      return (
-                        <Table.Row key={inmuebleItem.id}>
-                          <Table.Cell>
-                            {inmuebleItem.attributes.descripcion}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {inmuebleItem.attributes.direccion}
-                          </Table.Cell>
-                          <Table.Cell></Table.Cell>
-                        </Table.Row>
-                      );
-                    })}
-                </Table.Body>
-              </Table>
-
-              <Card.Footer>
-                <Row justify="flex-end">
-                  <Spacer></Spacer>
-                  <Button size="sm" color="error">
-                    CERRAR
-                  </Button>
-                </Row>
-              </Card.Footer>
-            </Card>
-          ) : (
-            <main>
-              <Authentication />
-            </main>
-          ))}
+        <>
+          <Grid>
+            <Row>
+              {solicitudes.data && solicitudes.data.length > 0 ? (
+                <>
+                  <Grid>
+                    <Row>
+                      <TableSolicitudes user={user} solicitudes={data} />
+                    </Row>
+                    <Row>
+                      <Grid.Container gap={2}>
+                        <Grid>
+                          <Button
+                            auto
+                            rounded
+                            className={`${
+                              pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
+                            }`}
+                            disabled={pageIndex === 1}
+                            onClick={() => setPageIndex(pageIndex - 1)}
+                          >
+                            {" "}
+                            <FaArrowAltCircleLeft />
+                          </Button>
+                        </Grid>
+                        <Grid>
+                          <Button
+                            auto
+                            rounded
+                            className={`${
+                              pageIndex ===
+                              (data &&
+                                data.meta &&
+                                data.meta.pagination.pageCount)
+                                ? "bg-gray-300"
+                                : "bg-blue-400"
+                            }`}
+                            disabled={
+                              pageIndex ===
+                              (data &&
+                                data.meta &&
+                                data.meta.pagination.pageCount)
+                            }
+                            onClick={() => setPageIndex(pageIndex + 1)}
+                          >
+                            <FaArrowAltCircleRight />
+                          </Button>
+                        </Grid>
+                        <Grid>
+                          <span>{`${pageIndex} de ${
+                            data && data.meta && data.meta.pagination.pageCount
+                          }`}</span>
+                        </Grid>
+                      </Grid.Container>
+                    </Row>
+                  </Grid>
+                </>
+              ) : (
+                <h3>No existen Solicitudes registradas</h3>
+              )}
+            </Row>
+          </Grid>
+        </>
       </LayoutEspecialista>
     </Layout>
   );
@@ -100,8 +119,13 @@ export async function getServerSideProps({ req, params }) {
       ? getTokenFromLocalCookie()
       : getTokenFromServerCookie(req);
 
-  const inmueblesResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/inmuebles?pagination[page]=1&pagination[pageSize]=5`,
+  const uo =
+    typeof window !== "undefined"
+      ? getUOFromLocalCookie()
+      : getUOFromServerCookie(req);
+
+  const solicitudesResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes?populate[0]=local&populate[1]=elaboradopor&populate[2]=demanda_recursos&populate[3]=ordenes_de_trabajos&filters[local][inmueble][unidadorganizativa][id][$eq]=${uo}&pagination[page]=1&pagination[pageSize]=5`,
     {
       method: "GET",
       headers: {
@@ -110,9 +134,10 @@ export async function getServerSideProps({ req, params }) {
       },
     }
   );
+
   return {
     props: {
-      inmuebles: inmueblesResponse,
+      solicitudes: solicitudesResponse,
     },
   };
 }

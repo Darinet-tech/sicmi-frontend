@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Layout } from "../../components";
-import LayoutSupervisor from "../../components/LayoutSupervisor";
+import LayoutSupervisor from "../../components/supervisor/LayoutSupervisor";
 import { useFetchUser } from "../../lib/authContext";
 
 export default function supervisor() {

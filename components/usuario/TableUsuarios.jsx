@@ -120,35 +120,36 @@ const TableUsuarios = ({ usuarios }) => {
                   return (
                     <Table.Row key={userItem.id}>
                       <Table.Cell>
-                        <Text b size={14} >
+                        <Text b size={14}>
                           {userItem.username}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} >
+                        <Text b size={14}>
                           {userItem.email}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} >
+                        <Text b size={14}>
                           {userItem.cargo}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} >
+                        <Text b size={14}>
                           {userItem.role ? userItem.role.name : ""}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        <Text b size={14} >
+                        <Text b size={14}>
                           {userItem.unidadorganizativa
                             ? userItem.unidadorganizativa.nombre
                             : ""}
                         </Text>
                       </Table.Cell>
                       <Table.Cell>
-                        {userItem.blocked}
-                        <StyledBadge type={userItem.blocked ? "Bloqueado" : "Activo"}>
+                        <StyledBadge
+                          type={userItem.blocked ? "Bloqueado" : "Activo"}
+                        >
                           {userItem.blocked ? "Bloqueado" : "Activo"}
                         </StyledBadge>
                       </Table.Cell>

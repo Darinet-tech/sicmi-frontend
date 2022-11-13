@@ -118,7 +118,7 @@ const TableSolicitudes = ({ solicitudes }) => {
                               <IconButton
                                 onClick={() => {
                                   router.push(
-                                    `/cliente/solicitudes/show/${solicitudItem.id}`
+                                    `/especialista/solicitudes/show/${solicitudItem.id}`
                                   );
                                 }}
                               >

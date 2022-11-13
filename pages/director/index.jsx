@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Layout } from "../../components";
-import LayoutDirector from "../../components/LayoutDirector";
+import LayoutDirector from "../../components/director/LayoutDirector";
 import { useFetchUser } from "../../lib/authContext";
 
 export default function director() {

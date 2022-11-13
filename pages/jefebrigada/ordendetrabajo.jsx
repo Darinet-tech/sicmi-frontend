@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useFetchUser } from "../../lib/authContext";
 import Select from "react-select";
 import { Spacer, Grid, Textarea, Card, Button } from "@nextui-org/react";
@@ -9,7 +10,7 @@ import {
 } from "../../lib/auth";
 import { fetcher } from "../../lib/api";
 import { Authentication, Layout } from "../../components";
-import LayoutJefeBrigada from "../../components/LayoutJefeBrigada";
+import LayoutJefeBrigada from "../../components/jefebrigada/LayoutJefeBrigada";
 
 export default function ordendetrabajo({ solicitud }) {
   const { user, loading } = useFetchUser();
@@ -55,7 +56,7 @@ export default function ordendetrabajo({ solicitud }) {
           (user ? (
             <Grid xl={12}>
               <Card>
-                <Card.Body style={{ width: "auto", height:"max-content" }}>
+                <Card.Body style={{ width: "auto", height: "max-content" }}>
                   <Select
                     defaultValue={{ label: "Unidad Organizativa" }}
                     options={unidadOrganizativa}
@@ -107,39 +108,34 @@ export default function ordendetrabajo({ solicitud }) {
                   <Button
                     style={{
                       position: "absolute",
-                      marginTop:"40px",
+                      marginTop: "40px",
                       bottom: "1px",
                       color: "white",
                       backgroundColor: "#228b22",
                       height: "30px",
-                      width:"40px",
-                      float:"right"
+                      width: "40px",
+                      float: "right",
                     }}
-                    
                   >
                     GUARDAR
                   </Button>
                   <Button
                     style={{
                       position: "absolute",
-                      padding:"10px",
+                      padding: "10px",
                       right: "1px",
                       bottom: "1px",
                       color: "white",
                       backgroundColor: "red",
                       height: "30px",
-                      width:"40px",
-                      
+                      width: "40px",
                     }}
-                    
                   >
                     CANCELAR
                   </Button>
                 </Card.Body>
               </Card>
-              
             </Grid>
-            
           ) : (
             <main>
               <Authentication />

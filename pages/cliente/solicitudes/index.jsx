@@ -28,7 +28,7 @@ export default function solicitudes({ solicitudes, locales }) {
 
   const { data } = useSWR(
     [
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes?populate[0]=local&populate[1]=elaboradopor&filters[local][arearesponsable][responsable][id][$eq]=${iduser}&pagination[page]=${pageIndex}&pagination[pageSize]=5`,
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes?populate[0]=local&populate[1]=elaboradopor&populate[2]=demanda_recursos&populate[3]=ordenes_de_trabajos&filters[local][arearesponsable][responsable][id][$eq]=${iduser}&pagination[page]=${pageIndex}&pagination[pageSize]=5`,
       {
         method: "GET",
         headers: {
@@ -47,80 +47,78 @@ export default function solicitudes({ solicitudes, locales }) {
     <Layout user={user} titulo="Cliente" baseURL="./../">
       <LayoutCliente>
         <>
-        <Grid>
-              <Row>
-                <AddSolicitud locales={locales} />
+          <Grid>
+            <Row>
+              <AddSolicitud locales={locales} />
 
-                <Button
-                  ghost
-                  auto
-                  onClick={() => router.push("/cliente/solicitudes/all")}
-                >
-                  Mostrar todos
-                </Button>
-              </Row>
-              <Row>
-                {solicitudes.data && solicitudes.data.length > 0 ? (
-                  <>
-                    <Grid>
-                      <Row>
-                        <TableSolicitudes user={user} solicitudes={data} />
-                      </Row>
-                      <Row>
-                        <Grid.Container gap={2}>
-                          <Grid>
-                            <Button
-                              auto
-                              rounded
-                              className={`${
-                                pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
-                              }`}
-                              disabled={pageIndex === 1}
-                              onClick={() => setPageIndex(pageIndex - 1)}
-                            >
-                              {" "}
-                              <FaArrowAltCircleLeft />
-                            </Button>
-                          </Grid>
-                          <Grid>
-                            <Button
-                              auto
-                              rounded
-                              className={`${
-                                pageIndex ===
-                                (data &&
-                                  data.meta &&
-                                  data.meta.pagination.pageCount)
-                                  ? "bg-gray-300"
-                                  : "bg-blue-400"
-                              }`}
-                              disabled={
-                                pageIndex ===
-                                (data &&
-                                  data.meta &&
-                                  data.meta.pagination.pageCount)
-                              }
-                              onClick={() => setPageIndex(pageIndex + 1)}
-                            >
-                              <FaArrowAltCircleRight />
-                            </Button>
-                          </Grid>
-                          <Grid>
-                            <span>{`${pageIndex} de ${
-                              data &&
-                              data.meta &&
-                              data.meta.pagination.pageCount
-                            }`}</span>
-                          </Grid>
-                        </Grid.Container>
-                      </Row>
-                    </Grid>
-                  </>
-                ) : (
-                  <h3>No existen Solicitudes registradas</h3>
-                )}
-              </Row>
-            </Grid>
+              <Button
+                ghost
+                auto
+                onClick={() => router.push("/cliente/solicitudes/all")}
+              >
+                Mostrar todos
+              </Button>
+            </Row>
+            <Row>
+              {solicitudes.data && solicitudes.data.length > 0 ? (
+                <>
+                  <Grid>
+                    <Row>
+                      <TableSolicitudes user={user} solicitudes={data} />
+                    </Row>
+                    <Row>
+                      <Grid.Container gap={2}>
+                        <Grid>
+                          <Button
+                            auto
+                            rounded
+                            className={`${
+                              pageIndex === 1 ? "bg-gray-300" : "bg-blue-400"
+                            }`}
+                            disabled={pageIndex === 1}
+                            onClick={() => setPageIndex(pageIndex - 1)}
+                          >
+                            {" "}
+                            <FaArrowAltCircleLeft />
+                          </Button>
+                        </Grid>
+                        <Grid>
+                          <Button
+                            auto
+                            rounded
+                            className={`${
+                              pageIndex ===
+                              (data &&
+                                data.meta &&
+                                data.meta.pagination.pageCount)
+                                ? "bg-gray-300"
+                                : "bg-blue-400"
+                            }`}
+                            disabled={
+                              pageIndex ===
+                              (data &&
+                                data.meta &&
+                                data.meta.pagination.pageCount)
+                            }
+                            onClick={() => setPageIndex(pageIndex + 1)}
+                          >
+                            <FaArrowAltCircleRight />
+                          </Button>
+                        </Grid>
+                        <Grid>
+                          <span>{`${pageIndex} de ${
+                            data && data.meta && data.meta.pagination.pageCount
+                          }`}</span>
+                        </Grid>
+                      </Grid.Container>
+                    </Row>
+                  </Grid>
+                </>
+              ) : (
+                <h3>No existen Solicitudes registradas</h3>
+              )}
+            </Row>
+          </Grid>
         </>
       </LayoutCliente>
     </Layout>
@@ -133,13 +131,13 @@ export async function getServerSideProps({ req, params }) {
       ? getTokenFromLocalCookie()
       : getTokenFromServerCookie(req);
 
-      const iduser =
-      typeof window !== "undefined"
-        ? getIdFromLocalCookie()
-        : getIdFromServerCookie(req);
+  const iduser =
+    typeof window !== "undefined"
+      ? getIdFromLocalCookie()
+      : getIdFromServerCookie(req);
 
   const solicitudesResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes?populate[0]=local&populate[1]=elaboradopor&filters[local][arearesponsable][responsable][id][$eq]=${iduser}&pagination[page]=1&pagination[pageSize]=5`,
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/solicitudes?populate[0]=local&populate[1]=elaboradopor&populate[2]=demanda_recursos&populate[3]=ordenes_de_trabajos&filters[local][arearesponsable][responsable][id][$eq]=${iduser}&pagination[page]=1&pagination[pageSize]=5`,
     {
       method: "GET",
       headers: {
@@ -163,7 +161,7 @@ export async function getServerSideProps({ req, params }) {
   return {
     props: {
       solicitudes: solicitudesResponse,
-      locales: localesResponse
+      locales: localesResponse,
     },
   };
 }

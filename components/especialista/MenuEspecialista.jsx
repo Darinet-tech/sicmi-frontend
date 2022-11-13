@@ -7,7 +7,7 @@ const MenuEspecialista = () => {
   const goto = (key) => {
     switch (key) {
       case "listar_solicitud":
-        router.push("../especialista/solicitudes");
+        router.push("/especialista/solicitudes");
         break;
       case "listar_inmuebles":
         router.push("/especialista/inmuebles");
@@ -35,7 +35,12 @@ const MenuEspecialista = () => {
           <Grid.Container gap={1} justify="flex-start">
             <Grid xl={12}>
               <Dropdown>
-                <Dropdown.Button style={{ width:"100%" }} light bordered color="gradient">
+                <Dropdown.Button
+                  style={{ width: "100%" }}
+                  light
+                  bordered
+                  color="gradient"
+                >
                   MENÚ
                 </Dropdown.Button>
                 <Dropdown.Menu
