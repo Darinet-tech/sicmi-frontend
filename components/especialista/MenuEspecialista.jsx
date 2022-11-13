@@ -9,8 +9,8 @@ const MenuEspecialista = () => {
       case "listar_solicitud":
         router.push("/especialista/solicitudes");
         break;
-        case "listar_recursos":
-        router.push("../especialista/recursos");
+      case "listar_recursos":
+        router.push("/especialista/recursos");
         break;
       case "listar_inmuebles":
         router.push("/especialista/inmuebles");
