@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Col,
   Input,
   Modal,
@@ -63,6 +64,7 @@ const TableDemandaMateriales = ({
     solicitud: null,
     recurso: null,
     demanda: 0,
+    entregadodealmacen: false,
   });
 
   const [recurso, setRecurso] = React.useState({
@@ -79,7 +81,6 @@ const TableDemandaMateriales = ({
 
   const handlerEditDemanda = (pid) => {
     loadEditDemanda(pid);
-    setVisibleModalEditDemanda(true);
   };
 
   const closeModalEditDemandaHandler = () => {
@@ -123,12 +124,16 @@ const TableDemandaMateriales = ({
         solicitud: demanda_loaded.data.attributes.solicitud.data.id,
         recurso: demanda_loaded.data.attributes.recurso.data.id,
         demanda: demanda_loaded.data.attributes.demanda,
+        entregadodealmacen: demanda_loaded.data.attributes.entregadodealmacen,
       });
+
       setRecurso({
         id: demanda_loaded.data.attributes.recurso.data.id,
         nomenclador:
           demanda_loaded.data.attributes.recurso.data.attributes.nomenclador,
       });
+
+      setVisibleModalEditDemanda(true);
     } catch (error) {
       router.reload();
     }
@@ -189,7 +194,6 @@ const TableDemandaMateriales = ({
             className="dropdown-dark"
             value={demanda.recurso}
           >
-            <option>Seleccione un Recurso</option>
             <option value={recurso.id}> {recurso.nomenclador} </option>
             {recursosnorelacionados &&
               recursosnorelacionados.data &&
@@ -214,6 +218,16 @@ const TableDemandaMateriales = ({
             type="number"
             value={demanda.demanda}
           />
+          <Checkbox
+            name="entregadodealmacen"
+            color="success"
+            defaultSelected={demanda.entregadodealmacen}
+            onChange={(newvalue) => {
+              setDemanda({ ...demanda, ["entregadodealmacen"]: newvalue });
+            }}
+          >
+            Entregado de Almacen
+          </Checkbox>
         </Modal.Body>
         <Modal.Footer>
           <Button auto onClick={closeModalEditDemandaHandler} color="error">

@@ -11,11 +11,9 @@ import {
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../../../components";
-import LayoutEspecialista from "../../../../components/especialista/LayoutEspecialista";
-import AddDemandaMaterial from "../../../../components/solicitud/AddDemandaMaterial";
-import AddOrdenDeTrabajo from "../../../../components/solicitud/AddOrdenDeTrabajo";
-import TableDemandaMateriales from "../../../../components/solicitud/TableDemandaMateriales";
-import TableOrdenesDeTrabajo from "../../../../components/solicitud/TableOrdenesDeTrabajo";
+import LayoutCliente from "../../../../components/cliente/LayoutCliente";
+import TableDemandaMateriales from "../../../../components/solicitud/TableDemandaMaterialesCliente";
+import TableOrdenesDeTrabajo from "../../../../components/solicitud/TableOrdenesDeTrabajoCliente";
 import { fetcher } from "../../../../lib/api";
 import {
   getTokenFromLocalCookie,
@@ -122,7 +120,7 @@ export default function showPage({ recursosnorelacionados, tiposmtto }) {
       setCantMaterialesDisponibles(contador_disponibles);
       setCantMaterialesEntregados(contador_entregados);
     } catch (error) {
-      router.push("/especialista/solicitudes");
+      router.push("/cliente/solicitudes");
     }
   };
 
@@ -134,7 +132,7 @@ export default function showPage({ recursosnorelacionados, tiposmtto }) {
 
   return (
     <Layout user={user} titulo="Especialista" baseURL="./../../../">
-      <LayoutEspecialista>
+      <LayoutCliente>
         <Collapse.Group>
           <Collapse title="Datos Generales de la Solicitud de Mantenimiento">
             <Grid.Container gap={2} justify="center">
@@ -205,10 +203,6 @@ export default function showPage({ recursosnorelacionados, tiposmtto }) {
             </Grid.Container>
           </Collapse>
           <Collapse title="Demanda de Materiales">
-            <AddDemandaMaterial
-              idsolicitud={solicitud.id}
-              recursosnorelacionados={recursosnorelacionados}
-            />
             {solicitud.demanda_recursos &&
             solicitud.demanda_recursos.length > 0 ? (
               <>
@@ -216,18 +210,6 @@ export default function showPage({ recursosnorelacionados, tiposmtto }) {
                   demanda_recursos={solicitud.demanda_recursos}
                   recursosnorelacionados={recursosnorelacionados}
                 />
-                <Button
-                  ghost
-                  auto
-                  disabled={!enableSolicitudMateriales}
-                  onClick={() => {
-                    router.push(
-                      `/especialista/solicitudes/modelo/${solicitud.id}`
-                    );
-                  }}
-                >
-                  Mostrar Vista Previa de Solicitud de Materiales
-                </Button>
               </>
             ) : (
               <Text h3 color="warning">
@@ -236,11 +218,6 @@ export default function showPage({ recursosnorelacionados, tiposmtto }) {
             )}
           </Collapse>
           <Collapse title="Ordenes de Trabajo">
-            <AddOrdenDeTrabajo
-              idsolicitud={solicitud.id}
-              tiposmtto={tiposmtto}
-              enableOrdenTrabajo={enableOrdenTrabajo}
-            />
             {solicitud.ordenes_de_trabajos &&
             solicitud.ordenes_de_trabajos.length > 0 ? (
               <TableOrdenesDeTrabajo
@@ -254,7 +231,7 @@ export default function showPage({ recursosnorelacionados, tiposmtto }) {
             )}
           </Collapse>
         </Collapse.Group>
-      </LayoutEspecialista>
+      </LayoutCliente>
     </Layout>
   );
 }

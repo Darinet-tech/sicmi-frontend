@@ -1,8 +1,8 @@
 import React from "react";
 import { Modal, Button, Text, Input, Textarea } from "@nextui-org/react";
 import { fetcher } from "../../lib/api";
-import { getIdFromLocalCookie, getTokenFromLocalCookie } from "../../lib/auth";
 import { useRouter } from "next/router";
+import { getTokenFromLocalCookie } from "../../lib/auth";
 
 const AddDemandaMaterial = ({ idsolicitud, recursosnorelacionados }) => {
   const jwt = typeof window !== "undefined" ? getTokenFromLocalCookie() : "";

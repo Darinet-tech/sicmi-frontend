@@ -114,7 +114,7 @@ const TableSolicitudes = ({ solicitudes }) => {
                       <Table.Cell>
                         <Row justify="center" align="center">
                           <Col css={{ d: "flex" }}>
-                            <Tooltip content="Detalles" color="primary">
+                            <Tooltip content="Gesti&oacute;n" color="success">
                               <IconButton
                                 onClick={() => {
                                   router.push(
@@ -122,7 +122,7 @@ const TableSolicitudes = ({ solicitudes }) => {
                                   );
                                 }}
                               >
-                                <EyeIcon size={20} fill="#979797" />
+                                <EditIcon size={20} fill="#00ff00" />
                               </IconButton>
                             </Tooltip>
                           </Col>
