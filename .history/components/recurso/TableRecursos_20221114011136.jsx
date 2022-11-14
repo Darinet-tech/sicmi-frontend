@@ -146,7 +146,7 @@ const TableRecursos = ({ recursos }) => {
                           {recursoItem.attributes.libreutilizacion}
                         </Text>
                       </Table.Cell>
-                      <Table.Cell css={{ textAlign: "center" }}>
+                      <Table.Cell >
                         <Text b size={14}>
                           {recursoItem.attributes.unidaddemedida}
                         </Text>

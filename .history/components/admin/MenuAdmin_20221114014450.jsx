@@ -12,7 +12,11 @@ const MenuAdmin = () => {
       
       case "listar_uos":
         router.push("/admin/unidadorganizativa");
-        break;      
+        break;
+      
+      case "listar_locales":
+        router.push("/especialista/locales");
+        break;
       default:
         break;
     }
