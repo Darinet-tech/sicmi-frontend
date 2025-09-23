@@ -21,7 +21,6 @@ const TableUnidadorganizativa = ({ unidadesorganizativas }) => {
   const router = useRouter();
 
   const [visible, setVisible] = React.useState(false);
-
   const [IdDelete, setIdDelete] = React.useState("");
   const handlerDelete = (pid) => {
     setIdDelete(pid);
@@ -51,7 +50,10 @@ const TableUnidadorganizativa = ({ unidadesorganizativas }) => {
       console.log(error.message);
     }
   };
+  
   return (
+
+    
     <>
       <Modal
         closeButton
@@ -94,45 +96,45 @@ const TableUnidadorganizativa = ({ unidadesorganizativas }) => {
           </Text>
         </Row>
         <Row>
+        <Grid.Container css={{ maxWidht: "100%", padding: "20px"}}>
           <Table
             aria-label="Listado de Unidades Organizativas"
             css={{
               height: "auto",
               minWidth: "100%",
+              tableLayout: "fixed" // Esto es clave para que respete los anchos
             }}
             selectionMode="single"
           >
             <Table.Header>
-              <Table.Column>NOMBRE</Table.Column>
-              <Table.Column>ACRÓNIMO</Table.Column>
-              <Table.Column>INMUEBLES</Table.Column>
-              <Table.Column hideHeader={true} align="center">
-                ACCIONES
-              </Table.Column>
+              <Table.Column css={{ textAlign: "center", width: "30%" }}>NOMBRE</Table.Column>
+              <Table.Column css={{ textAlign: "center", width: "20%" }}>ACRÓNIMO</Table.Column>
+              <Table.Column css={{ textAlign: "center", width: "20%" }}>INMUEBLES</Table.Column>
+              <Table.Column css={{ textAlign: "center", width: "20%" }}>ACCIONES</Table.Column>
             </Table.Header>
             <Table.Body>
               {unidadesorganizativas &&
                 unidadesorganizativas.data.map((uoItem) => {
                   return (
                     <Table.Row key={uoItem.id}>
-                      <Table.Cell>
+                      <Table.Cell css={{ width: "40%", whiteSpace: "normal", wordWrap: "break-word" }}>
                         <Text b size={14}>
                           {uoItem.attributes.nombre}
                         </Text>
                       </Table.Cell>
-                      <Table.Cell>
+                      <Table.Cell css={{ width: "20%", textAlign: "center" }}>
                         <Text b size={14}>
                           {uoItem.attributes.acronimo}
                         </Text>
                       </Table.Cell>
-                      <Table.Cell>
+                      <Table.Cell css={{ width: "20%", textAlign: "center" }}>
                         <Text b size={14}>
                           {uoItem.attributes.inmuebles &&
                             uoItem.attributes.inmuebles.data &&
                             uoItem.attributes.inmuebles.data.length}
                         </Text>
                       </Table.Cell>
-                      <Table.Cell>
+                      <Table.Cell css={{ width: "20%", textAlign: "center" }}>
                         <Row justify="center" align="center">
                           <Col css={{ d: "flex" }}>
                             <Tooltip content="Detalles" color="primary">
@@ -142,7 +144,7 @@ const TableUnidadorganizativa = ({ unidadesorganizativas }) => {
                             </Tooltip>
                           </Col>
                           <Col css={{ d: "flex" }}>
-                            <Tooltip content="Editar UO" color="success">
+                            <Tooltip content="Editar" color="success">
                               <IconButton
                                 onClick={() => {
                                   router.push(
@@ -156,7 +158,7 @@ const TableUnidadorganizativa = ({ unidadesorganizativas }) => {
                           </Col>
                           <Col css={{ d: "flex" }}>
                             <Tooltip
-                              content="Eliminar Area"
+                              content="Eliminar"
                               color="error"
                               onClick={() => {
                                 handlerDelete(uoItem.id);
@@ -174,6 +176,7 @@ const TableUnidadorganizativa = ({ unidadesorganizativas }) => {
                 })}
             </Table.Body>
           </Table>
+        </Grid.Container>
         </Row>
       </Grid>
     </>

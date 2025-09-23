@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import {
   Table,
   Row,
@@ -8,6 +8,7 @@ import {
   Button,
   Text,
   Grid,
+  Pagination
 } from "@nextui-org/react";
 import { IconButton } from "../icons/IconButton";
 import { EyeIcon } from "../icons/EyeIcon";
@@ -18,7 +19,17 @@ import { getTokenFromLocalCookie } from "../../lib/auth";
 import { fetcher } from "../../lib/api";
 
 const TableAreas = ({ areas }) => {
-  const router = useRouter();
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 10;
+
+  const pages = Math.ceil(areas.data.length / rowsPerPage);
+
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return areas.data.slice(start, end);
+  }, [page, areas.data]);
 
   const [visible, setVisible] = React.useState(false);
 
@@ -98,25 +109,21 @@ const TableAreas = ({ areas }) => {
             aria-label="Listado de Areas"
             css={{
               height: "auto",
-              
+              minWidth: "100%",
             }}
-            width="100%"
             selectionMode="single"
           >
             <Table.Header>
-              <Table.Column>NOMBRE</Table.Column>
-              <Table.Column>RESPONSABLE</Table.Column>
-              <Table.Column>LOCALES</Table.Column>
-              <Table.Column>CENTRO DE COSTO</Table.Column>
-              <Table.Column hideHeader={true} align="center">
-                ACCIONES
-              </Table.Column>
+              <Table.Column css={{ textAlign: "center" }}>NOMBRE</Table.Column>
+              <Table.Column css={{ textAlign: "center" }}>RESPONSABLE</Table.Column>
+              <Table.Column css={{ textAlign: "center" }}>LOCALES</Table.Column>
+              <Table.Column css={{ textAlign: "center" }}>CENTRO DE COSTO</Table.Column>
+              <Table.Column css={{ textAlign: "center" }}>ACCIONES</Table.Column>
             </Table.Header>
             <Table.Body>
-              {areas &&
-                areas.data.map((areaItem) => {
-                  return (
-                    <Table.Row key={areaItem.id}>
+              {items.map((areaItem) => {
+                return (
+                  <Table.Row key={areaItem.id}>
                       <Table.Cell>
                         <Text b size={14}>
                           {areaItem.attributes.nombre}
@@ -191,6 +198,14 @@ const TableAreas = ({ areas }) => {
                 })}
             </Table.Body>
           </Table>
+        </Row>
+        <Row justify="center" css={{ marginTop: "20px" }}>
+          <Pagination
+            total={pages}
+            page={page}
+            onChange={setPage}
+            css={{ margin: "0 auto" }}
+          />
         </Row>
       </Grid>
     </>

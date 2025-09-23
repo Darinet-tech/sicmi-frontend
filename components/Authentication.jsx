@@ -1,31 +1,22 @@
 import React from "react";
 import { Modal, Input, Row, Checkbox, Button, Text } from "@nextui-org/react";
-import { Email } from "../components";
-import { Password } from "../components";
+import { Email } from "../components/Email"; // Importación explícita
+import { Password } from "../components/Password"; // Importación explícita
 import styles from "../styles/authentication.module.css";
-import {
-  getTokenFromLocalCookie,
-  redirectByRole,
-  setRolUO,
-  setToken,
-} from "../lib/auth";
+import { setToken } from "../lib/auth";
 import { useUser } from "../lib/authContext";
 import { fetcher } from "../lib/api";
 
-/**/
-
 export const Authentication = () => {
   const [visible, setVisible] = React.useState(false);
+  const [error, setError] = React.useState(null);
   const handler = () => setVisible(true);
   const closeHandler = () => {
     setVisible(false);
+    setError(null);
   };
 
-  const [data, setData] = React.useState({
-    identifier: "",
-    password: "",
-  });
-
+  const [data, setData] = React.useState({ identifier: "", password: "" });
   const { user, loading } = useUser();
 
   const handleSubmit = async () => {
@@ -34,9 +25,7 @@ export const Authentication = () => {
         `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             identifier: data.identifier,
             password: data.password,
@@ -44,9 +33,15 @@ export const Authentication = () => {
         }
       );
 
-      setToken(responseAuth);
+      if (responseAuth.user) {
+        setToken(responseAuth);
+        setVisible(false);
+      } else {
+        setError("Credenciales incorrectas. Verifica tu usuario y contraseña.");
+      }
     } catch (error) {
-      console.log(error.message);
+      console.error("Error de autenticación:", error.message);
+      setError("Error de conexión. Intenta nuevamente.");
     }
   };
 
@@ -56,29 +51,17 @@ export const Authentication = () => {
 
   return (
     <div>
-      {!loading && !user ? (
+      {!loading && !user && (
         <>
-          <Button
-            className={styles.button}
-            color="warning"
-            shadow
-            onClick={handler}
-          >
+          <Button className={styles.button} color="primary" shadow onClick={handler}>
             PARA ACCEDER A ESTA PÁGINA DEBE AUTENTICARSE
           </Button>
-          <Modal
-            closeButton
-            blur
-            aria-labelledby="modal-title"
-            open={visible}
-            onClose={closeHandler}
-          >
+          <Modal closeButton blur open={visible} onClose={closeHandler}>
             <Modal.Header>
-              <Text id="modal-title" size={18}>
-                Autenticación
-              </Text>
+              <Text size={18}>Autenticación</Text>
             </Modal.Header>
             <Modal.Body>
+              {error && <Text color="error">{error}</Text>}
               <Input
                 name="identifier"
                 onChange={handleChange}
@@ -87,6 +70,7 @@ export const Authentication = () => {
                 fullWidth
                 color="primary"
                 size="lg"
+                placeholder="Correo electrónico"
                 contentLeft={<Email fill="currentColor" />}
               />
               <Input
@@ -98,6 +82,7 @@ export const Authentication = () => {
                 fullWidth
                 color="primary"
                 size="lg"
+                placeholder="Contraseña"
                 contentLeft={<Password fill="currentColor" />}
               />
               <Row justify="space-between">
@@ -116,8 +101,6 @@ export const Authentication = () => {
             </Modal.Footer>
           </Modal>
         </>
-      ) : (
-        ""
       )}
     </div>
   );
