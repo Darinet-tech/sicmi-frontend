@@ -103,8 +103,8 @@ const TableInmuebles = ({ inmuebles }) => {
             selectionMode="single"
           >
             <Table.Header>
-              <Table.Column>DESCRIPCION</Table.Column>
-              <Table.Column>DIRECCION</Table.Column>
+              <Table.Column>DESCRIPCIÓN</Table.Column>
+              <Table.Column>DIRECCIÓN</Table.Column>
               <Table.Column hideHeader={true} align="center">
                 ACCIONES
               </Table.Column>
